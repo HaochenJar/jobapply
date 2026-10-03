@@ -1,0 +1,9 @@
+{
+  "name": "jobapply",
+  "version": "0.1.0",
+  "description": "Semi-automated job applications: discover postings from ATS APIs, score fit, tailor a provenance-checked resume, fill forms in Chrome, and track outcomes from Gmail. Human gates on tier-1 firms, CAPTCHAs, and anything ambiguous.",
+  "author": {
+    "name": "HaochenJar",
+    "url": "https://github.com/HaochenJar"
+  }
+}

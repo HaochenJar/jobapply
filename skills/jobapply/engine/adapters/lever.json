@@ -1,0 +1,95 @@
+{
+  "platform": "lever",
+  "priority": 30,
+  "enabled": true,
+  "difficulty": "easy",
+  "verified": "Live, Aug 2026, against a Veeva posting. No react root, no fiber keys - server-rendered.",
+
+  "match": {
+    "url": ["jobs(\\.eu)?\\.lever\\.co/[^/]+/[0-9a-f-]{8,}", "jobs(\\.eu)?\\.lever\\.co/"],
+    "dom": ["input[name^=cards]", "form[enctype='multipart/form-data'] input[name=resume]", "#resume-upload-input"],
+    "notes": "Board index jobs.lever.co/<org>, embeddable with ?embed=true. Public JSON of every posting uuid: api.lever.co/v0/postings/<org>?mode=json (no key). Source tracking via ?lever-source=<x>."
+  },
+
+  "apply_url": {
+    "rules": [["^(https?://jobs(?:\\.eu)?\\.lever\\.co/[^/]+/[^/?#]+)(?:/apply)?(?:[?#].*)?$", "\\1/apply"]],
+    "note": "The posting page is not the form; /apply is."
+  },
+
+  "dom": "plain",
+  "upload_first": true,
+  "upload_first_why": "CRITICAL RACE: Lever parses the resume SERVER-SIDE and asynchronously overwrites name/email/phone/org/urls a second or two after upload, clobbering anything already typed. Upload first, wait for the parse to land, THEN write your values over the top. Fill-then-upload silently loses data.",
+  "order": ["preflight", "upload", "wait_parse", "fields", "questions", "verify"],
+
+  "wait_parse": {
+    "why": "Poll until the server-side parse has written into input[name=name], then let it settle before overwriting.",
+    "watch_selector": "input[name=name]",
+    "timeout_ms": 12000,
+    "settle_ms": 1500,
+    "on_timeout": "continue - the parse is a convenience, not a requirement; the fields step overwrites everything that matters anyway",
+    "js": "(async()=>{const v=await __wait(()=>{const e=document.querySelector({{SEL}});return e&&e.value&&e.value.trim()?e.value:null},{{MS}});await __sleep({{SETTLE}});return v||'PARSE_TIMEOUT'})()"
+  },
+
+  "fields": [
+    {"key": "resume_pdf", "selector": "input#resume-upload-input[name=resume]", "type": "file", "method": "file", "required": true, "phase": "upload",
+     "note": "input#resume-upload-input[data-qa=input-resume].application-file-input.invisible-resume-upload. Real input behind the styled control."},
+    {"key": "full_name", "selector": "input[name=name]", "type": "text", "method": "plain_set", "required": true,
+     "note": "Lever wants ONE full-name field, not first/last."},
+    {"key": "email", "selector": "input[name=email]", "type": "text", "method": "plain_set", "required": true},
+    {"key": "phone", "selector": "input[name=phone]", "type": "text", "method": "plain_set", "required": false},
+    {"key": "current_company", "selector": "input[name=org]", "type": "text", "method": "plain_set", "required": false},
+    {"key": "location", "selector": "input[name=location]", "type": "text", "method": "plain_set", "required": false,
+     "note": "Autocomplete that writes a JSON blob into hidden input[name=selectedLocation]. Typing the city and leaving selectedLocation empty is normally accepted. If the form rejects it, redo this field with method autocomplete_pick."},
+    {"key": "linkedin", "selector": "input[name='urls[LinkedIn]']", "type": "text", "method": "plain_set", "required": false},
+    {"key": "github", "selector": "input[name='urls[GitHub]']", "type": "text", "method": "plain_set", "required": false},
+    {"key": "website", "selector": "input[name='urls[Portfolio]']", "type": "text", "method": "plain_set", "required": false},
+    {"key": "additional_info", "selector": "textarea[name=comments]", "type": "textarea", "method": "plain_set", "required": false}
+  ],
+
+  "question_map": {
+    "how": "Every custom question is cards[<card-uuid>][field<N>] with a sibling hidden cards[<card-uuid>][baseTemplate]. Radios and checkboxes share the name. Discover, then map each label through answer_rules.",
+    "discover_js": "(async()=>{const out=[];const seen=new Set();document.querySelectorAll('[name^=cards]').forEach(e=>{const n=e.name;if(/\\[baseTemplate\\]$/.test(n))return;const t=(e.type||'').toLowerCase();const key=t==='radio'||t==='checkbox'?n:n+'#'+(e.id||'');if(seen.has(key))return;seen.add(key);const tag=e.tagName.toLowerCase();let type='text',sel=tag+'[name='+CSS.escape(n)+']',opts=null;if(t==='file')type='file';else if(tag==='textarea')type='textarea';else if(tag==='select'){type=/select2/.test(e.className||'')?'select2':'select';opts=[...e.options].map(o=>o.text)}else if(t==='radio'){type='radio_group';sel='input[name='+CSS.escape(n)+']';opts=[...document.querySelectorAll(sel)].map(r=>({value:r.value,label:__lbl(r).slice(0,80)}))}else if(t==='checkbox'){type='checkbox';sel='input[name='+CSS.escape(n)+'][value='+CSS.escape(e.value||'on')+']'}const card=e.closest('.application-question,li,.card');out.push({name:n,label:(card?__txt(card.querySelector('.text,.application-label,label,legend')||card):__lbl(e)).replace(/\\s+/g,' ').slice(0,300),type:type,selector:sel,options:opts,required:/required/i.test((card&&card.className)||'')||e.required===true})});return out})()",
+    "methods_by_type": {"text": "plain_set", "textarea": "plain_set", "select": "select_by_text", "select2": "select_by_text", "radio_group": "radio_pick", "checkbox": "checkbox_set", "file": "file"},
+    "select2_note": "class select2-hidden-accessible. jQuery is on the page, so select_by_text routes through $(el).val(v).trigger('change'). A bare value set leaves the visible select2 label stale.",
+    "typical": [
+      "Work authorization / visa sponsorship (radio pair)",
+      "Are you currently located in / willing to relocate to <city>?",
+      "Years of experience with <tech>",
+      "Salary expectations",
+      "How did you hear about us? (select2)",
+      "Notice period / earliest start date",
+      "Degree, school, graduation year (three linked selects on new-grad reqs)",
+      "Consent to AI-assisted screening (required checkbox, newer)",
+      "EEO/demographic block as its own card"
+    ]
+  },
+
+  "verify": {
+    "how": "plan() builds a single JS readback over every field it filled and compares against step.expect.",
+    "fail_closed": "Any MISSING, empty required field, or NO_OPTION -> human_queue.",
+    "why_it_matters_here": "This is the platform where a mis-sequenced upload silently reverts your values, so the readback is the only proof the parse did not clobber you.",
+    "extra_js": "(async()=>{const f=document.querySelector('form[enctype*=multipart]')||document;const errs=[...f.querySelectorAll('.error,[class*=error],[role=alert]')].map(e=>__txt(e)).filter(Boolean);const empty=[...f.querySelectorAll('input[required],textarea[required],select[required]')].filter(e=>e.type!=='file'&&!e.value).map(e=>e.name);return{errors:errs.slice(0,10),empty_required:empty.slice(0,10)}})()"
+  },
+
+  "submit": {
+    "selector": "form[enctype*=multipart] button[type=submit], button.postings-btn[type=submit], #btn-submit",
+    "gate": "db.claim(uid) must return before this click - it re-checks the tier-1 gate, auto_submit and the per-company caps. Irreversible.",
+    "verified": false,
+    "note": "Click the VISIBLE submit button only. hCaptcha resolves a token and then triggers the hidden button#hcaptchaSubmitBtn itself.",
+    "confirm": "URL becomes .../apply/thanks or get_page_text contains the thank-you copy"
+  },
+
+  "blockers": {
+    "captcha": {"type": "hCaptcha", "where": "div#h-captcha.h-captcha[data-sitekey=...] with newassets.hcaptcha.com frames; usually passive/invisible", "risk": "Renders a real challenge on suspicious IPs.", "on_challenge": "human_queue", "never": "No solving, no bypassing."},
+    "login": null,
+    "iframe": null,
+    "shadow_dom": false
+  },
+
+  "do_not_touch": [
+    {"selector": "textarea[name=g-recaptcha-response], textarea[name=h-captcha-response], input[name=cf-turnstile-response]", "why": "Captcha token fields. Writing to one is a bypass attempt - out of scope, permanently. Detection only; a visible challenge is human_queue."},
+    {"selector": "button#hcaptchaSubmitBtn", "why": "The hidden real submit that hCaptcha triggers once its token resolves. Clicking it directly is a captcha bypass - forbidden. Click the visible submit button and let hCaptcha do its thing."},
+    {"selector": "input[name=selectedLocation]", "why": "Hidden JSON blob owned by the location autocomplete. Hand-writing it desyncs the widget; leaving it empty is normally accepted."},
+    {"selector": "input[name$='[baseTemplate]']", "why": "Hidden card metadata Lever uses to reassemble the answer. Never write to it."}
+  ]
+}

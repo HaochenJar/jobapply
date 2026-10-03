@@ -1,0 +1,151 @@
+{
+ "platform": "ashby",
+ "priority": 40,
+ "enabled": true,
+ "difficulty": "easy",
+ "verified": "Live, Aug 2026, against the OpenAI board. __reactFiber$ confirmed on #_systemfield_name.",
+ "match": {
+  "url": [
+   "jobs\\.ashbyhq\\.com/[^/]+/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}",
+   "jobs\\.ashbyhq\\.com/"
+  ],
+  "dom": [
+   ".ashby-application-form-field-entry",
+   "#_systemfield_name",
+   "#ashby_embed"
+  ],
+  "notes": "Job links are always UUIDv4, which makes URL detection unambiguous. Embedded via <div id=ashby_embed> + embed.js or an iframe at jobs.ashbyhq.com/<org>/embed."
+ },
+ "apply_url": {
+  "rules": [
+   [
+    "^(https?://jobs\\.ashbyhq\\.com/[^/]+/[0-9a-fA-F-]{36})(?:/application)?(?:[?#].*)?$",
+    "\\1/application"
+   ]
+  ],
+  "note": "/<org>/<job-uuid> is the posting; /<org>/<job-uuid>/application is the form."
+ },
+ "dom": "react",
+ "upload_first": true,
+ "upload_first_why": "Ashby parses the uploaded resume and asynchronously overwrites name/email/phone/location/links. Upload the resume field first, let the parse settle, then write your values over the top.",
+ "order": [
+  "preflight",
+  "upload",
+  "wait_parse",
+  "fields",
+  "questions",
+  "verify"
+ ],
+ "wait_parse": {
+  "why": "Poll until the parse has written into #_systemfield_name, then settle before overwriting.",
+  "watch_selector": "#_systemfield_name",
+  "timeout_ms": 12000,
+  "settle_ms": 1500,
+  "on_timeout": "continue - the fields step overwrites everything that matters anyway",
+  "js": "(async()=>{const v=await __wait(()=>{const e=document.querySelector({{SEL}});return e&&e.value&&e.value.trim()?e.value:null},{{MS}});await __sleep({{SETTLE}});return v||'PARSE_TIMEOUT'})()"
+ },
+ "fields": [
+  {
+   "key": "resume_pdf",
+   "selector": "#_systemfield_resume",
+   "type": "file",
+   "method": "file",
+   "required": true,
+   "phase": "upload",
+   "note": "input#_systemfield_resume[required] inside div.ashby-application-form-input-file-dropzone. The dropzone is cosmetic; the input is real, so no synthetic drag events."
+  },
+  {
+   "key": "full_name",
+   "selector": "#_systemfield_name",
+   "type": "text",
+   "method": "react_set",
+   "required": true,
+   "note": "One full-name field, not first/last."
+  },
+  {
+   "key": "email",
+   "selector": "#_systemfield_email",
+   "type": "text",
+   "method": "react_set",
+   "required": true
+  },
+  {
+   "key": "location",
+   "selector": "#_systemfield_location",
+   "type": "autocomplete",
+   "method": "autocomplete_pick",
+   "required": false,
+   "note": "input.ashby-application-form-input-autocomplete[role=combobox][aria-haspopup=listbox]. MUST resolve to a suggestion - a raw value set leaves the location unresolved and the form rejects it."
+  }
+ ],
+ "field_notes": "Phone, LinkedIn, GitHub and everything else are per-org custom fields with per-job UUID ids - there are no stable selectors for them. They come out of question_map discovery, matched by label text.",
+ "question_map": {
+  "how": "Every question, system or custom, is wrapped in div.ashby-application-form-field-entry[data-field-path=<uuid>]. That wrapper is the stable hook; ids and names are per-job UUIDs. Discover, then map each label through answer_rules.",
+  "discover_js": "(async()=>{const out=[];const seen=new Set();const emit=(w,path)=>{const wsel=path?'.ashby-application-form-field-entry[data-field-path='+CSS.escape(path)+']':null;const lab=__txt(w.querySelector('label,legend,[class*=question-title]')||w).replace(/\\s+/g,' ').slice(0,300);if(!lab)return;const btns=[...w.querySelectorAll('button')].filter(b=>/^(yes|no)$/i.test(__txt(b)));const file=w.querySelector('input[type=file]');const combo=w.querySelector('input[role=combobox]');const radios=[...w.querySelectorAll('input[type=radio]')];const ta=w.querySelector('textarea');const sel=w.querySelector('select');const cb=w.querySelector('input[type=checkbox]');const txt=w.querySelector('input[type=text],input[type=email],input[type=tel],input[type=url],input[type=number],input:not([type])');let type,s,opts=null;if(btns.length){type='yesno_buttons';s=wsel||__css(btns[0].parentElement)||null;opts=btns.map(b=>__txt(b))}else if(file){type='file';s=__css(file)||(wsel&&wsel+' input[type=file]')}else if(combo){type='autocomplete';s=__css(combo)||(wsel&&wsel+' input[role=combobox]')}else if(radios.length){type='radio_group';s=radios[0].name?'input[type=radio][name='+CSS.escape(radios[0].name)+']':(wsel&&wsel+' input[type=radio]');opts=radios.map(r=>({value:r.value,label:__lbl(r).slice(0,80)}))}else if(sel){type='select';s=__css(sel)||(wsel&&wsel+' select');opts=[...sel.options].map(o=>o.text)}else if(ta){type='textarea';s=__css(ta)||(wsel&&wsel+' textarea')}else if(cb&&!txt){type='checkbox';s=__css(cb)||(wsel&&wsel+' input[type=checkbox]')}else if(txt){type='text';s=__css(txt)||(wsel&&wsel+' input')}else return;if(!s||seen.has(s))return;seen.add(s);out.push({field_path:path||'',label:lab,type:type,selector:s,options:opts,required:/\\*/.test(lab)||!!w.querySelector('[required]')})};document.querySelectorAll('[data-field-path],.ashby-application-form-field-entry').forEach(w=>emit(w,w.getAttribute('data-field-path')||''));document.querySelectorAll('[class*=question-title]').forEach(t=>{let w=t.closest('[class*=_fieldEntry_],[class*=_container_],.ashby-application-form-field-entry')||t.parentElement;if(w&&!w.closest('.ashby-application-form-field-entry'))emit(w,'')});document.querySelectorAll('input[type=radio][name]').forEach(r=>{const w=r.closest('[class*=radio-group],[class*=_fieldEntry_],[class*=_container_],fieldset')||r.parentElement;if(w)emit(w,'')});return out})()",
+  "methods_by_type": {
+   "text": "react_set",
+   "textarea": "react_set",
+   "select": "select_by_text",
+   "yesno_buttons": "button_pick",
+   "autocomplete": "autocomplete_pick",
+   "radio_group": "radio_pick",
+   "checkbox": "checkbox_set",
+   "file": "file"
+  },
+  "yesno_note": "Yes/No renders as a <button>Yes</button>/<button>No</button> pair backed by a hidden input[type=checkbox][name=<field-uuid>]. CLICK THE BUTTON. Poking the checkbox sets the DOM and leaves React's state unchanged.",
+  "eeoc_selectors": [
+   "[id*='__systemfield_eeoc_gender-labeled-radio-']",
+   "[id*='__systemfield_eeoc_race-labeled-radio-']",
+   "[id*='__systemfield_eeoc_veteran_status-labeled-radio-']",
+   "[id*='__systemfield_eeoc_disability_status-labeled-radio-']"
+  ],
+  "typical": [
+   "Preferred name",
+   "Where are you currently located? (autocomplete, must resolve to a suggestion)",
+   "When can you start a new role?",
+   "Are you authorized to work in the country where the job is located? (Yes/No buttons)",
+   "Will you now or in the future require visa sponsorship? (Yes/No buttons)",
+   "Can you work from our <city> office N days per week? (Yes/No buttons)",
+   "Additional information (textarea)",
+   "Arbitration agreement acknowledgement (labeled checkbox)",
+   "Certification that nothing was withheld (labeled checkbox)",
+   "Full EEOC self-ID radio block"
+  ]
+ },
+ "verify": {
+  "how": "plan() builds a single JS readback over every field it filled and compares against step.expect.",
+  "fail_closed": "Any MISSING, empty required field, unresolved location, or NO_OPTION -> human_queue.",
+  "extra_js": "(async()=>{const errs=[...document.querySelectorAll('[class*=error],[aria-invalid=true],[role=alert]')].map(e=>__txt(e)).filter(Boolean);const unanswered=[...document.querySelectorAll('.ashby-application-form-field-entry')].filter(w=>{const t=__txt(w);if(!/\\*/.test(t))return false;const i=w.querySelector('input,textarea,select');const b=[...w.querySelectorAll('button[aria-checked=true],button[aria-pressed=true]')];return !b.length&&(!i||(i.type==='file'?!(i.files&&i.files.length):!i.value&&!i.checked))}).map(w=>__txt(w).slice(0,60));return{errors:errs.slice(0,10),unanswered_required:unanswered.slice(0,10)}})()"
+ },
+ "submit": {
+  "selector": ".ashby-application-form-container button[type=submit], form button[type=submit]",
+  "gate": "db.claim(uid) must return before this click - it re-checks the tier-1 gate, auto_submit and the per-company caps. Irreversible.",
+  "verified": false,
+  "confirm": "get_page_text for the application-received copy"
+ },
+ "blockers": {
+  "captcha": {
+   "type": "reCAPTCHA v2 invisible",
+   "where": "recaptcha.net/recaptcha/api2/anchor with a g-recaptcha-response textarea; fires at submit",
+   "on_challenge": "human_queue",
+   "never": "No solving, no bypassing."
+  },
+  "login": null,
+  "iframe": "Only on the embed variant - navigate to jobs.ashbyhq.com/<org>/<uuid>/application directly instead.",
+  "shadow_dom": false
+ },
+ "do_not_touch": [
+  {
+   "selector": ".ashby-application-form-autofill-input-root input[type=file]",
+   "why": "The top-of-form 'autocomplete your application' uploader. It kicks off a second, more aggressive async prefill that overwrites fields after you have filled them. The real resume field (#_systemfield_resume) already covers the requirement."
+  },
+  {
+   "selector": ".ashby-application-form-field-entry input[type=checkbox][name]",
+   "why": "The hidden checkbox behind a Yes/No button pair. Click the button instead. (A standalone labeled acknowledgement checkbox is a different control and is fine to set.)"
+  },
+  {
+   "selector": "textarea[name=g-recaptcha-response]",
+   "why": "Captcha token field. Writing to it is a bypass attempt."
+  }
+ ]
+}

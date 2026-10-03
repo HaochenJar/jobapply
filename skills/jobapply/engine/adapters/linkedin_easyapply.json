@@ -1,0 +1,119 @@
+{
+  "platform": "linkedin_easyapply",
+  "priority": 50,
+  "enabled": true,
+  "difficulty": "hard",
+  "verified": "NOT verified first-hand - nobody logged into the user's LinkedIn. Every selector below is community knowledge with a short half-life; artdeco-* hashes churn on LinkedIn's release cadence. Discover at runtime and trust the readback, not this file.",
+
+  "policy": "Drive the user's OWN already-logged-in Chrome profile, at the user's own residential IP, one application at a time. That is a person's browser doing a person's action, and it is the only mode this adapter supports. NEVER: a second account, a cloud/proxy browser, a spoofed User-Agent or fingerprint, navigator.webdriver patching, or any attempt to look like a different client than the one the user actually runs. Enabled by default: using this channel is a risk decision each user makes; disable it (enabled=false) if you don't accept it.",
+
+  "rate": {
+    "per_day": 30,
+    "min_seconds_between": 90,
+    "scope": "seconds between APPLICATIONS, not between clicks inside one modal",
+    "why": "LinkedIn publishes two throttles and no numbers: a daily Easy Apply count that resets at 00:00 UTC, and a separate burst pause for 'rapidly submitting applications in a short time'. First-hand reports put the daily cap at a DYNAMIC 33-50, so 30 is a ceiling that stays under it on a bad day. This is honouring a documented limit, not defeating a detector: a fixed floor on the interval, no randomised jitter, no timing shaped to imitate a human.",
+    "on_cap": "If the UI says the daily limit is reached, STOP the LinkedIn channel for the day and move to another one. Never retry to find the edge of the cap."
+  },
+
+  "match": {
+    "url": ["linkedin\\.com/jobs/view/\\d+", "linkedin\\.com/jobs/search-results/\\?.*currentJobId=", "linkedin\\.com/jobs"],
+    "dom": [".jobs-apply-button", ".jobs-easy-apply-modal"],
+    "notes": "?openSDUIApplyFlow=true signals the new flow. A meaningful fraction of Easy Apply buttons are actually external redirects into a real ATS - preflight_js returns EXTERNAL for those; re-run detect() on the resulting URL and hand off to greenhouse/lever/ashby/workday."
+  },
+
+  "apply_url": {"rules": [], "note": "The posting page IS the entry point; the form is a modal on top of it."},
+
+  "dom": "react (light DOM on /jobs/view/), shadow DOM on the newer SDUI flow",
+  "upload_first": false,
+  "order": ["preflight", "gate", "fields", "questions", "verify"],
+
+  "preflight_js": {
+    "why": "Open the Easy Apply modal, and first tell a real Easy Apply from an offsite redirect wearing the same button.",
+    "js": "(async()=>{const M='.jobs-easy-apply-modal,[data-test-modal],[role=dialog]';if(document.querySelector(M))return'ok';const b=document.querySelector(\"button.jobs-apply-button,[aria-label^='Easy Apply'],[aria-label^='LinkedIn Apply to']\");if(!b)return'NO_APPLY_BUTTON';const lbl=((b.getAttribute('aria-label')||'')+' '+__txt(b)).toLowerCase();if(/company (web)?site|apply on|external/.test(lbl))return'EXTERNAL';b.click();const m=await __wait(()=>document.querySelector(M),8000);if(m)return'ok';const sh=[...document.querySelectorAll('*')].find(e=>e.shadowRoot&&e.shadowRoot.querySelector('form,input'));return sh?'SHADOW_MODAL':'MODAL_TIMEOUT'})()",
+    "on": {
+      "ok": "continue - legacy light-DOM modal, the selectors below resolve from document",
+      "EXTERNAL": "not a LinkedIn application: click through, then re-run adapters.detect() on the landing URL and re-plan with that adapter. Do not count it against the LinkedIn rate.",
+      "SHADOW_MODAL": "human_queue - the SDUI modal renders inside a shadow root; the fill methods here address the light DOM only and would silently no-op. See blockers.shadow_dom.",
+      "NO_APPLY_BUTTON": "human_queue - posting is closed, already applied, or the button never rendered",
+      "MODAL_TIMEOUT": "human_queue"
+    }
+  },
+
+  "gate": {
+    "type": "session",
+    "blocking": true,
+    "route": "human_queue",
+    "detect_js": "(async()=>{const u=location.href;if(/\\/checkpoint\\/challenge|\\/authwall|\\/uas\\/login/i.test(u))return'STOP_CHALLENGE';if(document.querySelector('input#session_key,input[name=session_password],form.login__form'))return'SIGN_IN_REQUIRED';if(/let.s do a quick security check|verify (that )?you.?re a human|unusual activity/i.test(document.body.innerText||''))return'STOP_CHALLENGE';return'ok'})()",
+    "why": "Everything here needs the user's authenticated session (li_at cookie). A /checkpoint/challenge interstitial means LinkedIn already suspects automation.",
+    "hard_rule": "NEVER type the LinkedIn password, never touch the login form, never solve or bypass a challenge. On STOP_CHALLENGE stop the WHOLE run, not just this application, and tell the user - continuing is what turns a suspicion into a restriction.",
+    "resume_after": "The user signs in themselves in that tab; then re-run preflight."
+  },
+
+  "fields": [
+    {"key": "email", "selector": "select[id*=email]", "type": "select", "method": "select_by_text", "required": false, "verified": false,
+     "note": "Contact step: a <select> of the account's already-verified addresses, prefilled. Only re-set it if the profile email differs."},
+    {"key": "phone_national", "selector": "input[id*=phoneNumber]", "type": "text", "method": "react_set", "required": false, "verified": false,
+     "note": "Digits only - the country code is a separate select LinkedIn prefills."}
+  ],
+  "fields_note": "Deliberately short. Resume is NOT in this list: the resume step offers previously-uploaded resumes as radio cards and picking one is both the reliable path and the one that does not add an upload signal (LinkedIn stores at most 4). Everything else on the modal is per-job and comes from question_map discovery.",
+
+  "flow": {
+    "shape": "Multi-step modal, typically 2-6 steps: contact -> resume -> screening questions -> review -> submit.",
+    "loop": "After EVERY navigation click, re-run question_map.discover_js. The modal replaces its own contents, so all refs and ids from the previous step are stale.",
+    "next": ["button[aria-label='Continue to next step']", "button[aria-label='Review your application']"],
+    "progress": ".artdeco-completeness-meter-linear__progress-element",
+    "resume_step": "Select the existing stored-resume radio card. Do not upload.",
+    "on_stuck": "If the Next button stays disabled after a step is filled, it is almost always a numeric-validated 'years of experience' box that got non-digits. Fix once, then human_queue - do not guess a number.",
+    "abandon": "Closing the modal offers 'Save' - saving a half-filled draft is fine and reversible; discarding is also fine. Neither is a submit."
+  },
+
+  "question_map": {
+    "how": "Per-modal-step discovery. Screening answers are remembered per question across applications once answered, so a step may already be filled - read before writing.",
+    "discover_js": "(async()=>{const roots=[document];document.querySelectorAll('*').forEach(e=>{if(e.shadowRoot)roots.push(e.shadowRoot)});const out=[];roots.forEach(r=>{r.querySelectorAll('input,select,textarea').forEach(e=>{const t=(e.type||'').toLowerCase();if(t==='hidden'||t==='submit')return;const tag=e.tagName.toLowerCase();out.push({label:(e.getAttribute('aria-label')||__lbl(e)).replace(/\\s+/g,' ').slice(0,300),type:tag==='select'?'select':(t||'text'),selector:__css(e),value:t==='checkbox'||t==='radio'?e.checked:e.value,in_shadow:r!==document})})});return out})()",
+    "methods_by_type": {"text": "react_set", "textarea": "react_set", "select": "select_by_text", "radio": "radio_pick", "checkbox": "checkbox_set", "file": "file"},
+    "biggest_failure": "'How many years of work experience do you have with <X>?' - free text with numeric-only validation, one per skill. Non-numeric input silently disables Next. There is no profile answer for it and inventing one is a lie about the user's experience: unmatched -> human_queue.",
+    "in_shadow_is_terminal": "Any discovered question with in_shadow=true cannot be filled by the methods in this file. Stop and human_queue.",
+    "typical": [
+      "Years of experience with <X> (numeric-validated free text)",
+      "Are you legally authorized to work in <country>?",
+      "Will you now or in the future require sponsorship?",
+      "Salary expectations (numeric)",
+      "City you currently reside in",
+      "Do you have a valid <certification/licence>? (Yes/No)",
+      "Willing to commute/relocate to <city>?",
+      "Preferred start date",
+      "Language proficiency (multi-select dropdown)"
+    ]
+  },
+
+  "verify": {
+    "how": "plan() reads back every field it filled. Re-verify on the review step, which shows the whole application on one screen.",
+    "fail_closed": "Any MISSING, NO_OPTION, in_shadow question, or a Next/Submit button still disabled -> human_queue. Never click Submit on an unverified modal.",
+    "extra_js": "(async()=>{const m=document.querySelector('.jobs-easy-apply-modal,[data-test-modal],[role=dialog]');if(!m)return'NO_MODAL';const errs=[...m.querySelectorAll('[class*=error],[role=alert],[aria-invalid=true]')].map(e=>__txt(e)).filter(Boolean);const nav=[...m.querySelectorAll('button')].filter(b=>/continue|review|submit/i.test((b.getAttribute('aria-label')||'')+__txt(b)));return{errors:errs.slice(0,10),blocked:nav.some(b=>b.disabled),step:__txt(m.querySelector('h2,h3')||{}).slice(0,120)}})()"
+  },
+
+  "submit": {
+    "selector": "button[aria-label='Submit application']",
+    "gate": "db.claim(uid) must return before this click - it re-checks the tier-1 gate, auto_submit and the per-company caps. Irreversible.",
+    "verified": false,
+    "note": "ONLY the button whose aria-label is exactly 'Submit application'. 'Continue to next step' and 'Review your application' advance the modal and are flow, not submit - confirm the label with read_page before clicking.",
+    "confirm": "get_page_text for the 'Your application was sent' / 'Application sent' confirmation, then close the modal."
+  },
+
+  "blockers": {
+    "policy": "LinkedIn User Agreement 8.2.2 / 8.2.13 prohibit bots and automated access. Running the channel anyway is each user's own risk decision, and it is not a licence to hide the automation. Nothing here spoofs a client or defeats a check.",
+    "login": "Requires the user's authenticated session (li_at cookie). Use their own logged-in Chrome; never handle the cookie or the password.",
+    "captcha": {"type": "no per-application captcha, but /checkpoint/challenge interstitials appear on suspicion", "on_challenge": "STOP the whole run, not just this application, and tell the user. Detection only - never solve or bypass one."},
+    "shadow_dom": "The newer SDUI modal (/jobs/search-results/) renders inside a shadow root. discover_js can READ it, but every fill method here calls document.querySelector and would silently miss. Detected in preflight as SHADOW_MODAL -> human_queue. Fixing it properly means shadow-aware fill methods in _common.json; not written because the /jobs/view/ URLs discover.py produces land on the legacy light-DOM modal.",
+    "external_redirect": "Some Easy Apply buttons leave LinkedIn entirely. preflight returns EXTERNAL; re-detect and hand off.",
+    "rate": "See rate. Two independent throttles: daily count and burst pause.",
+    "detection": "LinkedIn profiles extension ids, DOM integrity, automation flags and timing distributions. We do not attempt to defeat any of it - the only mitigations used are the ones that are also just true: The user's own browser, the user's own IP, one application at a time, well under the published caps."
+  },
+
+  "do_not_touch": [
+    {"selector": "textarea[name=g-recaptcha-response], textarea[name=h-captcha-response], input[name=cf-turnstile-response]", "why": "Captcha token fields. Writing to one is a bypass attempt - out of scope, permanently. Detection only; a visible challenge is human_queue."},
+    {"selector": "input[type=file]", "why": "Pick the already-stored resume card instead. LinkedIn keeps at most 4 stored resumes and re-uploading the same file on every application is noise the user gains nothing from."},
+    {"selector": "input#session_key, input[name=session_password], form.login__form", "why": "Credential entry is a prohibited action. The user signs in."},
+    {"selector": "[data-test-checkpoint-challenge], iframe[src*=checkpoint]", "why": "Challenge interstitial. Detect, stop the run, tell the user. Never interact."}
+  ]
+}

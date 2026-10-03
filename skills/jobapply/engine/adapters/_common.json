@@ -1,0 +1,488 @@
+{
+  "_": "Shared vocabulary merged into every adapter by adapters.load(). Methods are JS templates; adapters.plan() substitutes {{SEL}} / {{VAL}} (already JSON-encoded literals) and prepends js_helpers. javascript_tool REPL rule: the last expression is the return value, so never write a top-level `return`. Every template is a bare async IIFE with NO leading top-level `await` - the tool awaits the returned promise, and this form works on both javascript_tool implementations.",
+  "js_helpers": "globalThis.__txt=e=>((e&&(e.innerText||e.textContent))||'').trim();globalThis.__sleep=ms=>new Promise(r=>setTimeout(r,ms));globalThis.__wait=async(f,ms)=>{const t=Date.now();while(Date.now()-t<ms){let v=null;try{v=f()}catch(_){}if(v)return v;await __sleep(100)}return null};globalThis.__rset=(e,v)=>{const p=e.tagName==='TEXTAREA'?HTMLTextAreaElement.prototype:(e.tagName==='SELECT'?HTMLSelectElement.prototype:HTMLInputElement.prototype);Object.getOwnPropertyDescriptor(p,'value').set.call(e,v);e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}))};globalThis.__lbl=e=>{let l=null;if(e.id){try{l=document.querySelector('label[for='+CSS.escape(e.id)+']')}catch(_){}}if(!l)l=e.closest('label');if(l)return __txt(l);const w=e.closest('.ashby-application-form-field-entry,.application-question,li,fieldset,.field,div');return w?__txt(w).slice(0,300):''};globalThis.__css=e=>e.id?'#'+CSS.escape(e.id):(e.name?e.tagName.toLowerCase()+'[name='+CSS.escape(e.name)+']':'');",
+  "methods": {
+    "react_set": {
+      "read": "value",
+      "use": "React-controlled <input>/<textarea> (Greenhouse, Ashby, Workday, LinkedIn). el.value='x' alone is silently discarded by React.",
+      "js": "(async()=>{const e=document.querySelector({{SEL}});if(!e)return'MISSING';__rset(e,{{VAL}});await __sleep(60);return e.value})()"
+    },
+    "plain_set": {
+      "read": "value",
+      "use": "Server-rendered plain HTML (Lever). Direct assignment works; events still dispatched so any jQuery listener sees it.",
+      "js": "(async()=>{const e=document.querySelector({{SEL}});if(!e)return'MISSING';e.value={{VAL}};e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}));await __sleep(40);return e.value})()"
+    },
+    "react_select": {
+      "read": "text",
+      "use": "react-select combobox (Greenhouse dropdowns). Setting the visible input does NOT commit a selection - the listbox option must be clicked. Falls back to ArrowDown if filtering yields nothing.",
+      "js": "(async()=>{const inp=document.querySelector({{SEL}});if(!inp)return'MISSING';inp.focus();inp.dispatchEvent(new MouseEvent('mousedown',{bubbles:true}));__rset(inp,{{VAL}});const w=String({{VAL}}).trim().toLowerCase();const list=()=>[...document.querySelectorAll('[class*=select__option],[role=option]')].filter(o=>o.offsetParent!==null);const pick=()=>{const l=list();return l.find(o=>__txt(o).toLowerCase()===w)||l.find(o=>__txt(o).toLowerCase().startsWith(w))||l.find(o=>__txt(o).toLowerCase().includes(w))};let o=await __wait(pick,6000);if(!o){inp.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowDown',keyCode:40,which:40,bubbles:true}));o=await __wait(pick,3000)}if(!o)return'NO_OPTION:'+list().map(x=>__txt(x)).slice(0,20).join('|');['mousedown','mouseup','click'].forEach(t=>o.dispatchEvent(new MouseEvent(t,{bubbles:true})));await __sleep(250);const c=inp.closest('[class*=select__control]')||inp.parentElement;return __txt(c)})()"
+    },
+    "select_by_text": {
+      "read": "select_text",
+      "use": "Real <select>. Matches by visible option text, then sets by option value. Routes through jQuery when present so a select2 (Lever) repaints its visible label; a bare value set leaves select2 stale.",
+      "js": "(async()=>{const e=document.querySelector({{SEL}});if(!e)return'MISSING';const w=String({{VAL}}).trim().toLowerCase();const o=[...e.options].find(x=>x.text.trim().toLowerCase()===w)||[...e.options].find(x=>x.text.trim().toLowerCase().startsWith(w))||[...e.options].find(x=>x.text.trim().toLowerCase().includes(w));if(!o)return'NO_OPTION:'+[...e.options].map(x=>x.text).slice(0,25).join('|');if(window.jQuery&&window.jQuery(e).data('select2'))window.jQuery(e).val(o.value).trigger('change');else{e.value=o.value;e.dispatchEvent(new Event('change',{bubbles:true}))}await __sleep(150);return e.options[e.selectedIndex]?e.options[e.selectedIndex].text:''})()"
+    },
+    "radio_pick": {
+      "read": "group",
+      "use": "Radio group. {{SEL}} must select the whole group (e.g. input[name=cards\\[uuid\\]\\[field2\\]]). Matches on value first, then on the radio's own label text.",
+      "js": "(async()=>{const rs=[...document.querySelectorAll({{SEL}})];if(!rs.length)return'MISSING';const w=String({{VAL}}).trim().toLowerCase();const t=rs.find(r=>(r.value||'').trim().toLowerCase()===w)||rs.find(r=>__lbl(r).toLowerCase().startsWith(w))||rs.find(r=>__lbl(r).toLowerCase().includes(w));if(!t)return'NO_OPTION:'+rs.map(r=>r.value).join('|');t.click();if(!t.checked){t.checked=true;t.dispatchEvent(new Event('change',{bubbles:true}))}await __sleep(80);return rs.filter(r=>r.checked).map(r=>r.value).join(',')})()"
+    },
+    "checkbox_set": {
+      "read": "checked",
+      "use": "Single checkbox. Clicks only when the current state differs, so it is idempotent on retry.",
+      "js": "(async()=>{const e=document.querySelector({{SEL}});if(!e)return'MISSING';const want=/^(true|yes|1|on|checked)$/i.test(String({{VAL}}));if(e.checked!==want)e.click();if(e.checked!==want){e.checked=want;e.dispatchEvent(new Event('change',{bubbles:true}))}await __sleep(60);return e.checked})()"
+    },
+    "button_pick": {
+      "read": "text",
+      "use": "Yes/No or multi-choice rendered as buttons (Ashby). {{SEL}} is the field CONTAINER. Click the button; never poke the hidden checkbox behind it - React owns that state.",
+      "js": "(async()=>{const c=document.querySelector({{SEL}});if(!c)return'MISSING';const w=String({{VAL}}).trim().toLowerCase();const bs=[...c.querySelectorAll('button,[role=radio],[role=button]')];const b=bs.find(x=>__txt(x).toLowerCase()===w)||bs.find(x=>__txt(x).toLowerCase().startsWith(w));if(!b)return'NO_OPTION:'+bs.map(x=>__txt(x)).join('|');b.click();await __sleep(200);const cb=c.querySelector('input[type=checkbox],input[type=radio]');return b.getAttribute('aria-checked')||b.getAttribute('aria-pressed')||(cb?String(cb.checked):'')||__txt(c).slice(0,80)})()"
+    },
+    "autocomplete_pick": {
+      "read": "value",
+      "use": "Typeahead that must resolve to a real suggestion (Ashby location, Lever location). A raw value set leaves the field unresolved and the form rejects it.",
+      "js": "(async()=>{const e=document.querySelector({{SEL}});if(!e)return'MISSING';e.focus();__rset(e,{{VAL}});e.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowDown',keyCode:40,which:40,bubbles:true}));const w=String({{VAL}}).trim().toLowerCase();const pick=()=>{const l=[...document.querySelectorAll('[role=option],[class*=autocomplete] li,[class*=suggestion],[class*=option],[class*=popup-result]')].filter(o=>__txt(o)&&o.offsetParent!==null);return l.find(o=>__txt(o).toLowerCase().startsWith(w))||l[0]};const o=await __wait(pick,6000);if(!o)return'NO_OPTION';['mousedown','mouseup','click'].forEach(t=>o.dispatchEvent(new MouseEvent(t,{bubbles:true})));await __sleep(300);return e.value})()"
+    },
+    "workday_prompt": {
+      "read": "text",
+      "use": "Workday has NO <select> elements. {{SEL}} is the button[data-automation-id=...]; it opens a popup of [data-automation-id=promptOption] items that must be clicked.",
+      "js": "(async()=>{const b=document.querySelector({{SEL}});if(!b)return'MISSING';b.click();const w=String({{VAL}}).trim().toLowerCase();const pick=()=>{const l=[...document.querySelectorAll('[data-automation-id=promptOption],[role=option]')];return l.find(o=>__txt(o).toLowerCase()===w)||l.find(o=>__txt(o).toLowerCase().startsWith(w))};const o=await __wait(pick,6000);if(!o)return'NO_OPTION';o.click();await __sleep(300);return __txt(b)})()"
+    },
+    "file": {
+      "read": "file",
+      "use": "Every platform here hides a REAL <input type=file> behind its dropzone. read_page (which returns non-visible nodes) or find -> ref -> mcp file_upload({tabId, ref, paths:[abs_path]}). NEVER click a file input or its Attach button: that opens an invisible native OS picker you cannot drive. javascript_tool cannot help - it cannot construct a File from a local path.",
+      "js": null
+    },
+    "type_keys": {
+      "read": "value",
+      "use": "Fallback when javascript_tool is unavailable/blocked: computer{left_click, ref} then computer{type}. Real keystrokes satisfy React without any JS. Slower; do not use for 100/day throughput unless the JS path fails.",
+      "js": null
+    }
+  },
+  "read_expressions": {
+    "value": "e.value",
+    "checked": "e.checked",
+    "file": "(e.files&&e.files[0])?e.files[0].name:''",
+    "text": "__txt(e.closest('[class*=select__control]')||e)",
+    "select_text": "e.options&&e.options[e.selectedIndex]?e.options[e.selectedIndex].text:e.value",
+    "group": "[...document.querySelectorAll(SEL)].filter(x=>x.checked).map(x=>x.value).join(',')"
+  },
+  "profile_keys": {
+    "_": "Canonical keys adapters.plan() reads out of profile.json. Anything not listed is a per-job override passed in job['overrides'].",
+    "identity": [
+      "first_name",
+      "last_name",
+      "full_name",
+      "email",
+      "phone",
+      "phone_national",
+      "linkedin",
+      "github",
+      "website",
+      "location",
+      "city",
+      "state",
+      "country"
+    ],
+    "files": [
+      "resume_pdf",
+      "cover_letter_pdf",
+      "cover_letter_text"
+    ],
+    "background": [
+      "current_company",
+      "school",
+      "degree",
+      "major",
+      "grad_month",
+      "grad_year",
+      "gpa",
+      "years_experience_default",
+      "additional_info"
+    ],
+    "work_auth_frozen": [
+      "authorized_to_work",
+      "requires_sponsorship",
+      "authorized_without_sponsorship",
+      "us_citizen_or_pr",
+      "visa_status",
+      "needs_cpt_opt"
+    ],
+    "screening": [
+      "earliest_start_date",
+      "salary_expectation",
+      "willing_to_relocate",
+      "previously_employed",
+      "relatives_employed",
+      "over_18",
+      "non_compete",
+      "source_of_referral",
+      "acknowledge",
+      "ai_screening_consent"
+    ],
+    "eeoc": [
+      "eeoc_gender",
+      "eeoc_race",
+      "eeoc_veteran",
+      "eeoc_disability"
+    ],
+    "never_store": [
+      "ssn",
+      "date_of_birth",
+      "passport_number",
+      "bank_account",
+      "routing_number",
+      "drivers_license_number"
+    ]
+  },
+  "work_auth_invariant": {
+    "rule": "authorized_to_work == 'Yes' AND requires_sponsorship == 'Yes', asserted together, read verbatim from profile.json. Never inferred, never model-generated. plan() raises if the pair is anything else.",
+    "why": "F-1 with CPT/OPT eligibility is lawfully authorized (NACE guidance) but will need H-1B after OPT expires. Answering 'No' to sponsorship is the single most common misrepresentation and surfaces at I-9 time.",
+    "wording_traps": [
+      "'authorized to work WITHOUT sponsorship' / 'unrestricted' / 'permanent basis' -> No (key: authorized_without_sponsorship)",
+      "'Are you a US citizen or permanent resident?' -> No (key: us_citizen_or_pr). Never answer Yes: a false claim to US citizenship is 18 U.S.C. 911 and a permanent inadmissibility bar."
+    ]
+  },
+  "answer_rules": {
+    "_": "Ordered. First pattern (case-insensitive regex, tested against the discovered question label) wins. kind tells the agent which value shape to send; key names the profile value. kind=human -> stop and queue for a person. kind=fraud -> ABORT the whole application and flag.",
+    "rules": [
+      {
+        "pattern": "social security|\\bssn\\b|date of birth|\\bdob\\b|passport (number|no\\b)|bank account|routing number|driver'?s licen[cs]e number",
+        "kind": "fraud",
+        "key": null,
+        "why": "Pre-offer request for identity/financial data. Abort and flag; never store or supply these."
+      },
+      {
+        "pattern": "false (or misleading )?(statements?|information)|grounds for (dismissal|discharge|termination|disqualification|rejection)|misrepresentation|misstatement|personally completed",
+        "kind": "human",
+        "key": null,
+        "why": "Certification WITH a penalty clause ('false statements are grounds for dismissal') goes to a person. A plain 'I certify ... true and accurate' box is NOT caught here and still reaches `acknowledge` (pinned test). Sits first because the paragraph's EEO sentence would otherwise hit the gender/race rules. Also covers the HARD STOP 'I personally completed this application' (misstatement = grounds for discharge)."
+      },
+      {
+        "pattern": "security clearance|export control|export administration|\\bear\\b|\\bitar\\b|citizenship (status|requirement)|are you a (us|u\\.s\\.) citizen|permanent resident|permanent residency|u\\.?s\\.? person",
+        "kind": "human",
+        "key": "us_citizen_or_pr",
+        "why": "Citizenship-gated req. Answer is No but the role is usually disqualifying - let a person decide before submitting. 2026-09-01: `itar` was unanchored and matched inside 'military', so 'Are you a Veteran or an active member of the military?' resolved here instead of eeoc_veteran. Now \\bitar\\b."
+      },
+      {
+        "pattern": "without\\b.{0,40}?\\b(sponsor\\w*|(employer|company|visa|immigration)\\s+support)|unrestricted (work )?authori[sz]ation|permanent basis|now or in the future.*without|without any restriction|without restriction|for any employer without|any employer without any|(?:for|by)\\s+(?:all|any)\\s+employers?|no restrictions|permanent (work )?authori[sz]ation|permanently authori[sz]ed",
+        "kind": "yes_no",
+        "key": "authorized_without_sponsorship",
+        "why": "NEGATIVE-POLARITY work-auth question -> answered from the frozen 'No' family. MUST stay ahead of authorized_to_work. 'Authorized to work for ANY employer WITHOUT ANY restrictions?' is NOT the same question as 'authorized to work in the US?' - F-1/OPT IS restricted, so mapping it to the positive rule produces a materially false statement on a federal-adjacent form."
+      },
+      {
+        "pattern": "require.*sponsor(ship)?\\b|need.*sponsor(ship)?\\b|sponsor(ship)?.*(now|future)|visa sponsor(ship)?\\b|require.{0,25}assistance with work authorization|sponsor you for a (work|visa)|sponsor\\w*.{0,30}h-?1b|h-?1b.{0,25}(sponsor|petition|status\\?)|require .{0,15}work authori[sz]ation|need .{0,15}work authori[sz]ation",
+        "kind": "yes_no",
+        "key": "requires_sponsorship"
+      },
+      {
+        "pattern": "legally authori[sz]ed|authori[sz]ed to (lawfully |legally )?work|authori[sz]ation to work|eligible to work|work authorization|legally allowed to work|allowed to work in the (us|u\\.s\\.|united states)",
+        "kind": "yes_no",
+        "key": "authorized_to_work"
+      },
+      {
+        "pattern": "current (visa|immigration) status|visa type|what.*visa|\\bcpt\\b|\\bopt\\b(?!-?in|-?out)|student visa",
+        "kind": "text",
+        "key": "visa_status"
+      },
+      {
+        "pattern": "languages? (do you|you) speak|fluent in|language proficiency|which languages|^language(s)? fluency\\*?$|^languages?\\*?$",
+        "kind": "text",
+        "key": "languages_fluent"
+      },
+      {
+        "pattern": "(referr(er|ed by)|referral).{0,40}(name|who|employee)|name of (the )?(person|employee) who referred|who referred you",
+        "kind": "text",
+        "key": "referrer_name",
+        "why": "MUST sit before source_of_referral: 'If you were referred by an employee, what is their name?' matched the referral-source rule and would type 'Website' into a person's NAME field. There is no referrer in profile.json, so this key resolves to nothing and the field is correctly left blank/routed rather than filled with the wrong value."
+      },
+      {
+        "pattern": "how did you (first )?(hear|learn)|where did you hear|how you heard|tell us how you heard|referral source|source of (referral|application|hire)|referr(al|ed by)|where did you find",
+        "kind": "select",
+        "key": "source_of_referral"
+      },
+      {
+        "pattern": "linkedin",
+        "kind": "url",
+        "key": "linkedin"
+      },
+      {
+        "pattern": "github|gitlab",
+        "kind": "url",
+        "key": "github"
+      },
+      {
+        "pattern": "portfolio|personal (web)?site|website|blog|other url",
+        "kind": "url",
+        "key": "website"
+      },
+      {
+        "pattern": "salary|compensation (expectation|requirement)|desired pay|expected (pay|comp)",
+        "kind": "text",
+        "key": "salary_expectation"
+      },
+      {
+        "pattern": "(program|degree|education|school|university|college).{0,30}start\\s*(date|year)|start\\s*(date|year).{0,30}(program|degree|education|school|university|college)",
+        "kind": "text",
+        "key": "start_year"
+      },
+      {
+        "pattern": "(program|degree|education|school|university|college).{0,30}start\\s*month|start\\s*month.{0,30}(program|degree|education|school|university|college)",
+        "kind": "select",
+        "key": "start_month"
+      },
+      {
+        "pattern": "do you have (a |an )?notice period|restrictions on your availability",
+        "kind": "yes_no",
+        "key": "notice_period",
+        "why": "MUST precede earliest_start_date, whose pattern contains 'notice period' and 'availability'. This phrasing is a Yes/No, so that rule would have written a DATE into a boolean field."
+      },
+      {
+        "pattern": "start date|when can you (start|begin)|earliest.*(start|available)|availability|notice period",
+        "kind": "text",
+        "key": "earliest_start_date"
+      },
+      {
+        "pattern": "^(?!.*(?:currently (based|resid|liv|locat)|do you (currently )?live (in|near)|are you (currently )?(based|located|living) (in|near)|based near)).*?(?:willing to relocate|relocat|willing to commute|able to commute)",
+        "kind": "yes_no",
+        "key": "willing_to_relocate",
+        "why": "Willingness only. Refuses labels containing a present-tense residency FACT ('are you currently based near our hub offices and able to commute 3 days/week') - for a candidate not based there, a blanket Yes is a false location claim. Those route to a human/judgment instead."
+      },
+      {
+        "pattern": "^(?!.*(?:currently (based|resid|liv|locat)|do you (currently )?live (in|near)|are you (currently )?(based|located|living) (in|near)|based near)).*?(?:(hybrid|onsite|on-site|in[- ]office|in the office).{0,80}(day|days|policy|requirement|week)|(day|days)\\s*(a|per|/)\\s*week.{0,60}(office|hybrid|onsite)|\\d+x\\s*(/|a|per)?\\s*week.{0,60}(office|hybrid|onsite)|(office|hybrid|onsite).{0,60}\\d+x\\s*(/|a|per)?\\s*week|anchor days|willing to relocate|relocate to|relocation|come into (a |the )?(our )?office|work from (our|the) (us |u\\.s\\. )?office|able to work.{0,40}(days?|onsite|hybrid|office)|comfortable.{0,30}(onsite|on-site|in[- ]office|hybrid)|(onsite|on-site|in[- ]office|hybrid) (setting|environment|role|position)|able and willing to work (onsite|on-site|in[- ]office)|(able|willing) to (work|be) (onsite|on-site|in[- ]office))",
+        "kind": "yes_no",
+        "key": "willing_onsite_relocate",
+        "why": "Willingness only. Refuses labels containing a present-tense residency FACT ('are you currently based near our hub offices and able to commute 3 days/week') - for a candidate not based there, a blanket Yes is a false location claim. Those route to a human/judgment instead."
+      },
+      {
+        "pattern": "^zip( code)?\\*?$|^postal code\\*?$|zip/postal code|postal/zip code",
+        "kind": "text",
+        "key": "postal_code"
+      },
+      {
+        "pattern": "^country\\*?$|country of residence|which country|country/region|country (where|in which) you|country.{0,20}(reside|located|live|based)",
+        "kind": "select",
+        "key": "country"
+      },
+      {
+        "pattern": "what (u\\.?s\\.?|us) state|which (u\\.?s\\.?\\s*)?state|state or (canadian )?province|state (you|of) residen|^state\\*?$|state where you (currently )?(reside|live)",
+        "kind": "select",
+        "key": "state",
+        "why": "MUST sit before the location rule: 'What U.S State do you currently reside in?' matches (reside) and would put 'Los Angeles, CA' into a state dropdown, which yields NO_OPTION. Source is identity.state."
+      },
+      {
+        "pattern": "(currently )?(located|reside|live)|current (location|city)|city you|^location\\s*(\\([^)]{0,30}\\))?\\*?$",
+        "kind": "text",
+        "key": "location"
+      },
+      {
+        "pattern": "previously (worked|been employed)|ever (worked|been employed) (for|at|by)|former employee|previously applied|^\\s*(are|have|did|do|were|was)\\s+you\\b.{0,80}(employed\\s+(by|here|there|at|with)|an?\\s+employee|employee\\s+(here|there|of|at)|consultant|work(ed)?\\s+(here|there|for us|at us|at this|at our))",
+        "kind": "yes_no",
+        "key": "previously_employed"
+      },
+      {
+        "pattern": "relative|family member.*employ|friends.*employ",
+        "kind": "yes_no",
+        "key": "relatives_employed"
+      },
+      {
+        "pattern": "18 years|age of majority|at least 18",
+        "kind": "yes_no",
+        "key": "over_18"
+      },
+      {
+        "pattern": "non-?compet(e|ition)|restrictive covenant",
+        "kind": "yes_no",
+        "key": "non_compete"
+      },
+      {
+        "pattern": "years of (work )?experience|how many years",
+        "kind": "number",
+        "key": "years_experience_default",
+        "why": "LinkedIn/Greenhouse numeric-validated free text - the single biggest source of failed submissions. Must be digits only."
+      },
+      {
+        "pattern": "graduation (year|date)|expected graduation|end (year|date)|degree.*(conferred|awarded|completed)|(conferred|awarded).*degree|year.*degree.*conferred",
+        "kind": "text",
+        "key": "grad_year"
+      },
+      {
+        "pattern": "^(?!\\s*(do|does|did|have|has|are|is|will|would|can)\\b).*\\bdegree\\b",
+        "kind": "select",
+        "key": "degree",
+        "why": "Which degree you hold (a select). Deliberately does NOT match yes/no phrasings like 'Do you have a college degree?' - a bare 'degree' pattern used to type the full degree name into a Yes/No widget."
+      },
+      {
+        "pattern": "^\\s*(your\\s+)?(discipline|major|field\\s*of\\s*study)\\*?\\s*$|^\\s*(discipline|major|field\\s*of\\s*study)\\s*/\\s*(discipline|major|field\\s*of\\s*study)\\*?\\s*$",
+        "kind": "select",
+        "key": "major"
+      },
+      {
+        "pattern": "\\bgpa\\b",
+        "kind": "text",
+        "key": "gpa"
+      },
+      {
+        "pattern": "year in school|current year in (school|your program)|class year|what year are you in",
+        "kind": "select",
+        "key": "year_in_school",
+        "why": "MUST sit before the school rule, which matched 'select your current year in school' and would feed the school NAME into a year select. No profile key: derive from education[0].start or route to a human."
+      },
+      {
+        "pattern": "^(?!\\s*(do|does|did|have|has|are|is|will|would|can)\\b).*(school|university|college|institution)",
+        "kind": "text",
+        "key": "school"
+      },
+      {
+        "pattern": "^\\s*(your\\s+)?current\\s*/\\s*last\\s+(job\\s+)?title\\*?\\s*$|(what\\s+is\\s+|what'?s\\s+)?your\\s+current\\s+(or\\s+(most\\s+recent|last|previous)\\s+)?job\\s+title|^\\s*job\\s+title\\*?\\s*$",
+        "kind": "text",
+        "key": "current_title"
+      },
+      {
+        "pattern": "current (company|employer)|company you work|current\\s*/\\s*(last|previous|prior) (company|employer)|current or (most recent|last|previous|prior) (company|employer)|who is your current",
+        "kind": "text",
+        "key": "current_company"
+      },
+      {
+        "pattern": "preferred (first )?name|preferred given name|goes by|nickname|name you go by",
+        "kind": "text",
+        "key": "preferred_name",
+        "why": "MUST sit before the first_name rule: 'first name|given name' also matches 'Preferred First Name', which would write the legal first name into the preferred-name field."
+      },
+      {
+        "pattern": "(first|given)\\s*(name)?\\s*(and|&|/|,)\\s*(last|sur|family)\\s*name|(last|sur|family)\\s*(name)?\\s*(and|&|/|,)\\s*(first|given)\\s*name",
+        "kind": "text",
+        "key": "full_name",
+        "why": "MUST sit before first_name, for the same reason preferred_name does: 'Please list legal first and last name' matches 'legal first' and would write only the first name into a field asking for the whole name."
+      },
+      {
+        "pattern": "first name|given name|legal first",
+        "kind": "text",
+        "key": "first_name"
+      },
+      {
+        "pattern": "last name|surname|family name|legal last",
+        "kind": "text",
+        "key": "last_name"
+      },
+      {
+        "pattern": "full (legal )?name|^name$|your (full |legal )?name",
+        "kind": "text",
+        "key": "full_name",
+        "why": "Late on purpose: the school / current-employer / referral rules above already claim the 'name of ...' labels."
+      },
+      {
+        "pattern": "e-?mail",
+        "kind": "text",
+        "key": "email"
+      },
+      {
+        "pattern": "^\\s*(your\\s+)?(mobile\\s+|cell(ular)?\\s+)?phone(\\s*number)?\\*?\\s*$|^\\s*mobile\\s*(number|phone)?\\*?\\s*$|^\\s*cell(ular)?\\s*(number|phone)?\\*?\\s*$|^\\s*contact\\s*(number|phone)\\*?\\s*$|^\\s*telephone(\\s*number)?\\*?\\s*$",
+        "kind": "text",
+        "key": "phone_national",
+        "why": "Digits only. Portals that want E.164 declare the field explicitly (Greenhouse) instead of reaching this rule."
+      },
+      {
+        "pattern": "pronoun",
+        "kind": "text",
+        "key": "pronouns",
+        "why": "Must precede the eeoc_gender rule: 'preferred gender pronouns' contains 'gender' and would otherwise be answered 'Decline to self-identify' in a free-text pronoun field."
+      },
+      {
+        "pattern": "sex assigned at birth|assigned sex|birth sex",
+        "kind": "select",
+        "key": "sex_assigned_at_birth",
+        "why": "MUST precede eeoc_gender, whose pattern is a bare \\bsex\\b. Sex assigned at birth and gender identity are different questions with different answers for many people; conflating them writes an answer the user never gave."
+      },
+      {
+        "pattern": "sexual orientation|do you identify as lgbt|lgbtq",
+        "kind": "select",
+        "key": "eeoc_sexual_orientation",
+        "why": "Added 2026-09-01; previously matched nothing and fell to the human queue."
+      },
+      {
+        "pattern": "^(?=.{0,200}$).*(?:(?<!trans)gender|\\bsex\\b)",
+        "kind": "select",
+        "key": "eeoc_gender",
+        "why": "2026-09-10: length-guarded (<=200 chars) so a legal paragraph whose EEO clause says \"race, sex\" cannot land here; (?<!trans) keeps \"transgender\" out."
+      },
+      {
+        "pattern": "hispanic|latino",
+        "kind": "select",
+        "key": "eeoc_hispanic_latino",
+        "why": "MUST precede eeoc_race, whose pattern also contains 'hispanic|latino' as a bare alternative. Race and Hispanic/Latino ethnicity are DIFFERENT questions with independent answers in profile.json; answering one from the other is an inference, not the user's answer. Found live: 'Are you Hispanic/Latino?' resolved to eeoc_race and would have written the race value into an ethnicity question."
+      },
+      {
+        "pattern": "^(?=.{0,200}$).*(?:race|ethnicity|hispanic|latino)",
+        "kind": "select",
+        "key": "eeoc_race",
+        "why": "2026-09-10: length-guarded (<=200 chars) so a legal paragraph whose EEO clause says \"race, sex\" cannot land here."
+      },
+      {
+        "pattern": "veteran|protected veteran|military",
+        "kind": "select",
+        "key": "eeoc_veteran"
+      },
+      {
+        "pattern": "disabilit|cc-?305|identify as disabled|have a disability",
+        "kind": "select",
+        "key": "eeoc_disability"
+      },
+      {
+        "pattern": "(consent|agree|acknowledg|permit|authoriz|opt[- ]?in|object).{0,60}(\\bai\\b|machine learning|automated (screening|assessment|decision)|algorithmic)|(\\bai\\b|machine learning|automated (screening|assessment|decision)|algorithmic).{0,60}(consent|acknowledg|to (screen|evaluate|assess) (your|my|applicant))",
+        "kind": "yes_no",
+        "key": "ai_screening_consent",
+        "why": "Consent-to-AI-screening checkbox, increasingly required. Pattern now REQUIRES consent/acknowledge language next to the AI term - a bare mention of 'AI' (e.g. 'Which best describes how you use AI tools today?') must NOT match, since that is a usage question, not a consent."
+      },
+      {
+        "pattern": "consent.{0,30}(process|processing).{0,60}(personal (data|information)|privacy policy)|process(ing)?.{0,30}personal (data|information).{0,60}(consent|privacy policy|candidacy)",
+        "kind": "yes_no",
+        "key": "data_processing_consent"
+      },
+      {
+        "pattern": "top (choice|preference)|first choice|only (firm|company|role) (you|i) (am|are) apply|(will |shall )?not apply to (any )?other|may not apply to other|exclusiv(e|ity)|no outstanding offers|have not (applied|interviewed) (to|with|at) any other",
+        "kind": "checkbox",
+        "key": "exclusivity_attestation",
+        "why": "MUST precede the `acknowledge` blanket-agree rule, which matches on 'acknowledg' and would otherwise tick this. The `acknowledge` key covers TERMS -- privacy notices, T&Cs, certifications, arbitration. This is not terms: it is a factual claim about the user's preferences that forecloses every other req at that firm for the season. Deliberately has NO _MAP entry, so it stays unanswered and routes to the user."
+      },
+      {
+        "pattern": "arbitration|acknowledg|certif(y|ication)|i agree|consent|attest|confirm that",
+        "kind": "checkbox",
+        "key": "acknowledge"
+      },
+      {
+        "pattern": "cover letter|why (do you want|are you interested)|tell us|additional information|anything else",
+        "kind": "text",
+        "key": "additional_info"
+      }
+    ],
+    "unmatched": "human_queue",
+    "unmatched_why": "Fail closed. A screening question nobody mapped is answered by a person, never guessed by the model."
+  },
+  "preflight": {
+    "fraud_scan": {
+      "why": "HARD RULE: a pre-offer form asking for SSN / DOB / passport / bank details is a fraud tripwire. Abort the application and flag it; do not fill anything.",
+      "abort_when": "result is a non-empty list",
+      "js": "(async()=>{const bad=/social security|\\bssn\\b|date of birth|\\bdob\\b|passport (number|no\\b)|bank account|routing number|driver'?s licen[cs]e number/i;const hits=[...document.querySelectorAll('label,legend,h1,h2,h3')].map(e=>__txt(e)).filter(t=>t&&bad.test(t));return hits.slice(0,5)})()"
+    },
+    "captcha_scan": {
+      "why": "All six platforms use an invisible/passive captcha that fires at submit. The anchor iframe is ALWAYS present and is not a blocker; only a VISIBLE challenge frame is. Detection only - solving or bypassing a captcha is out of scope, permanently.",
+      "abort_when": "result != 'ok'",
+      "on_abort": "human_queue",
+      "js": "(async()=>{const f=[...document.querySelectorAll('iframe')].filter(i=>/recaptcha\\/(api2|enterprise)\\/bframe|hcaptcha\\.com.*(challenge|hcaptcha-challenge)/i.test(i.src||''));const vis=f.filter(i=>{const r=i.getBoundingClientRect();if(r.width<80||r.height<80)return false;let n=i;for(let d=0;d<4&&n;d++,n=n.parentElement){const s=getComputedStyle(n);if(s.visibility==='hidden'||s.display==='none'||s.opacity==='0')return false}return true});const txt=document.body.innerText||'';if(vis.length)return'CAPTCHA_CHALLENGE';if(/verify you are human|complete the (security )?check|unusual traffic/i.test(txt))return'CAPTCHA_TEXT';return'ok'})()"
+    }
+  },
+  "step_ops": {
+    "navigate": "mcp navigate({url, tabId})",
+    "read_page": "mcp read_page({tabId, filter:'interactive'}) - re-anchor refs after any DOM change",
+    "js": "mcp javascript_tool({tabId, text}) - returns the last expression; compare against step.expect",
+    "file_upload": "read_page/find -> ref for step.selector -> mcp file_upload({tabId, ref, paths:[step.path]}). <10MB total. Never click the input.",
+    "discover": "js step whose result is the question inventory; then apply answer_rules to each label",
+    "verify": "js step returning {key: readback}. Fail closed: any MISSING or mismatch on a required field -> human_queue, do NOT submit.",
+    "abort_if": "js step; if step.abort_when holds, stop and route per step.on_abort",
+    "submit": "NEVER emitted inside steps. Returned separately and requires explicit per-application human go-ahead in chat."
+  },
+  "batching": {
+    "how": "One browser_batch per phase, ref-addressed actions only (form_input / file_upload / computer{left_click,ref}). Coordinates inside a batch aim at the PRE-batch screenshot and are stale - never batch coordinate clicks. Batches stop on first error. End each batch with read_page to re-anchor.",
+    "waits": "There is no wait-for-selector tool. Use the __wait poll already baked into the method JS; computer{action:'wait'} is a blind sleep of last resort."
+  }
+}

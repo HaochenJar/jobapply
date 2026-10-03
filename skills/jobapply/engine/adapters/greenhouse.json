@@ -1,0 +1,92 @@
+{
+  "platform": "greenhouse",
+  "priority": 20,
+  "enabled": true,
+  "difficulty": "easy",
+  "verified": "Live, Aug 2026, against the Anthropic board. __reactFiber$ confirmed on #first_name.",
+
+  "match": {
+    "url": [
+      "job-boards(\\.eu)?\\.greenhouse\\.io/[^/]+/jobs/\\d+",
+      "job-boards(\\.eu)?\\.greenhouse\\.io/embed/job_app\\?",
+      "boards(\\.eu)?\\.greenhouse\\.io/",
+      "[?&]gh_jid=",
+      "greenhouse\\.io/"
+    ],
+    "dom": ["form#application-form", "[id^=question_]", "#grnhse_app"],
+    "notes": "boards.greenhouse.io 301-redirects to job-boards.greenhouse.io (verified with curl). Embedded on company domains as <div id=grnhse_app> producing a CROSS-ORIGIN iframe; the host page carries ?gh_jid=<id>. my.greenhouse.io is an optional candidate profile, not needed to apply."
+  },
+
+  "apply_url": {
+    "rules": [],
+    "note": "The posting page IS the application form. No /apply suffix."
+  },
+
+  "preflight_js": {
+    "why": "If the form is the cross-origin embed, refs may not cross the frame. Navigate to the iframe's own URL so the form is top-level.",
+    "js": "(async()=>{if(document.querySelector('form#application-form'))return'ok';const f=document.querySelector('#grnhse_app iframe,iframe[src*=\"job-boards.greenhouse.io\"]');if(f&&f.src)return'NAVIGATE:'+f.src;const m=location.search.match(/[?&]gh_jid=(\\d+)/);return m?'EMBED_NO_IFRAME:'+m[1]:'NO_FORM'})()",
+    "on": {"ok": "continue", "NAVIGATE:<url>": "navigate there, then re-run preflight", "EMBED_NO_IFRAME:<id>": "human_queue - board token unknown, cannot build the embed URL", "NO_FORM": "human_queue"}
+  },
+
+  "dom": "react",
+  "upload_first": false,
+  "upload_first_why": "Greenhouse does NOT parse the resume into the form (verified). No async overwrite race, so field order is free. Upload is placed after the text fields purely so a failed upload does not waste the fills.",
+  "order": ["preflight", "fields", "upload", "questions", "verify"],
+
+  "fields": [
+    {"key": "first_name", "selector": "#first_name", "type": "text", "method": "react_set", "required": true},
+    {"key": "last_name", "selector": "#last_name", "type": "text", "method": "react_set", "required": true},
+    {"key": "email", "selector": "#email", "type": "text", "method": "react_set", "required": true},
+    {"key": "phone", "selector": "#phone", "type": "tel_intl", "method": "react_set", "required": false,
+     "note": "intl-tel-input. Write the E.164 value (+1XXXXXXXXXX) and let iti parse it. Only touch button.iti__selected-country if the flag ends up wrong; do not pre-click it."},
+    {"key": "resume_pdf", "selector": "input#resume[type=file]", "type": "file", "method": "file", "required": true,
+     "note": "input#resume.visually-hidden[accept=.pdf,.doc,.docx,.txt,.rtf] inside div.file-upload__wrapper. Hidden is fine - read_page returns non-visible nodes."},
+    {"key": "cover_letter_pdf", "selector": "input#cover_letter[type=file]", "type": "file", "method": "file", "required": false},
+    {"key": "cover_letter_text", "selector": "#cover_letter_text", "type": "textarea", "method": "react_set", "required": false,
+     "note": "Only exists after clicking the 'Enter manually' link. Skip when cover_letter_pdf was uploaded; the id is community knowledge, discover it at runtime if missing."}
+  ],
+
+  "question_map": {
+    "how": "Custom question ids are per-JOB (#question_<question_id>), so never hardcode them. Discover, then map each label through answer_rules.",
+    "discover_js": "(async()=>{const out=[];const seen=new Set();const root=document.querySelector('form#application-form')||document;root.querySelectorAll('label[for]').forEach(L=>{const id=L.getAttribute('for');if(!id||seen.has(id))return;let e=document.getElementById(id);if(!e)return;if(e.className&&/requiredInput/.test(e.className)){const alt=(e.parentElement||document).querySelector('[role=combobox]');if(alt)e=alt}seen.add(id);const tag=e.tagName.toLowerCase();const t=(e.type||'').toLowerCase();let type='text',sel=__css(e),opts=null;if(t==='file')type='file';else if(tag==='textarea')type='textarea';else if(tag==='select'){type='select';opts=[...e.options].map(o=>o.text)}else if(e.getAttribute('role')==='combobox'||/select__input/.test(e.className||''))type='react_select';else if(t==='checkbox')type='checkbox';else if(t==='radio'){type='radio_group';sel='input[name='+CSS.escape(e.name)+']';opts=[...document.querySelectorAll(sel)].map(r=>r.value)}out.push({id:id,label:__txt(L).replace(/\\s+/g,' '),type:type,selector:sel,options:opts,required:/\\*|required/i.test(__txt(L))||e.required===true})});return out})()",
+    "methods_by_type": {"text": "react_set", "textarea": "react_set", "select": "select_by_text", "react_select": "react_select", "radio_group": "radio_pick", "checkbox": "checkbox_set", "file": "file"},
+    "typical": [
+      "Are you legally authorized to work in <country>? (react-select Yes/No)",
+      "Will you now or in the future require sponsorship? (react-select)",
+      "How did you hear about this job? (react-select, often required)",
+      "Have you previously worked for / applied to <company>?",
+      "Current location / preferred office",
+      "Salary expectations (free text)",
+      "Arbitration agreement acknowledgement (required dropdown or checkbox)",
+      "LinkedIn / GitHub / portfolio URL",
+      "EEOC self-ID block: gender, race/ethnicity, veteran, disability - its own required react-selects"
+    ]
+  },
+
+  "verify": {
+    "how": "plan() builds a single JS readback over every field it filled and compares against step.expect.",
+    "fail_closed": "Any MISSING, empty required field, or NO_OPTION -> human_queue. Never submit an unverified form.",
+    "extra_js": "(async()=>{const f=document.querySelector('form#application-form');if(!f)return'NO_FORM';const errs=[...f.querySelectorAll('[class*=error],[aria-invalid=true],[role=alert]')].map(e=>__txt(e)).filter(Boolean);const empty=[...f.querySelectorAll('input[required],textarea[required],select[required]')].filter(e=>e.type!=='file'&&!e.value).map(e=>__css(e));return{errors:errs.slice(0,10),empty_required:empty.slice(0,10)}})()"
+  },
+
+  "submit": {
+    "selector": "#submit_app, form#application-form button[type=submit], form#application-form input[type=submit]",
+    "gate": "db.claim(uid) must return before this click - it re-checks the tier-1 gate, auto_submit and the per-company caps. Irreversible.",
+    "verified": false,
+    "note": "Submit control selector is community knowledge, not verified live. Confirm with read_page before clicking. Clicking fires the invisible reCAPTCHA Enterprise check.",
+    "confirm": "get_page_text and look for the application-received copy, or a URL change to .../confirmation"
+  },
+
+  "blockers": {
+    "captcha": {"type": "reCAPTCHA Enterprise, invisible", "where": "recaptcha.net/recaptcha/enterprise/anchor?...&size=invisible plus a g-recaptcha-response textarea in the form; executes silently on submit", "risk": "Scores badly from datacenter/VPN IPs and can escalate to an image challenge. Run in the user's own residential browser session.", "on_challenge": "human_queue", "never": "No solving, no bypassing, no third-party solver."},
+    "login": null,
+    "iframe": "Only when the employer used the embed option - see preflight_js.",
+    "shadow_dom": false
+  },
+
+  "do_not_touch": [
+    {"selector": "input.remix-css-*-requiredInput", "why": "Hidden sibling of the react-select combobox, used only for HTML5 validation. Setting it fakes validity without committing a selection."},
+    {"selector": "textarea[name=g-recaptcha-response]", "why": "Captcha token field. Writing to it is a bypass attempt - out of scope, permanently."},
+    {"selector": "a:has-text('Enter manually')", "why": "Only click when you intend to paste cover letter text instead of uploading a file."}
+  ]
+}

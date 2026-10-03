@@ -1,0 +1,108 @@
+{
+  "platform": "workday",
+  "priority": 10,
+  "enabled": true,
+  "difficulty": "hard",
+  "verified": "URL shapes, apply routes, [data-automation-id] strategy and the beecatcher honeypot verified live on nvidia.wd5 up to the sign-in wall, Aug 2026. EVERYTHING PAST SIGN-IN IS UNVERIFIED community knowledge - discover automation ids at runtime, do not trust this file's post-login selectors.",
+
+  "match": {
+    "url": ["\\.wd\\d+\\.myworkdayjobs\\.com", "\\.wd\\d+\\.myworkdaysite\\.com", "myworkdayjobs\\.com", "myworkdaysite\\.com"],
+    "dom": ["[data-automation-id]"],
+    "notes": "Vanity domains (careers.<company>.com) proxy the same app - sniff for [data-automation-id] and XHR to /wday/. Path shape: /<locale>/<SiteName>/job/<Location>/<Job-Slug>_<JR-id>."
+  },
+
+  "apply_url": {
+    "rules": [["^(https?://[^?#]*?myworkday(?:jobs|site)\\.com/[^?#]*?/job/[^?#]+?)(?:/apply.*)?(?:[?#].*)?$", "\\1/apply"]],
+    "entry_points": {
+      "/apply": "the adventure page - lists the three routes below",
+      "/apply/useMyLastApplication": "CHEAPEST path, use whenever the candidate has applied to this tenant before",
+      "/apply/autofillWithResume": "uploads + parses the resume and prefills the wizard. Parse is mediocre (mangles employment dates, splits job titles) - you must still walk every step and repair",
+      "/apply/applyManually": "full manual wizard, 5-8 steps"
+    }
+  },
+
+  "dom": "react",
+  "upload_first": true,
+  "upload_first_why": "The autofillWithResume route parses the resume and prefills the whole wizard asynchronously. Upload first, let it settle, then repair every step. Also true of any in-wizard resume upload.",
+  "order": ["preflight", "gate", "upload", "wait_parse", "fields", "questions", "verify"],
+
+  "gate": {
+    "type": "account_wall",
+    "blocking": true,
+    "route": "human_queue",
+    "detect_js": "(async()=>{const q=s=>document.querySelector('[data-automation-id='+s+']');if(q('signInSubmitButton')||q('createAccountSubmitButton')||q('password'))return'SIGN_IN_REQUIRED';if(q('utilityButtonSignIn')&&!q('bottom-navigation-next-button'))return'SIGN_IN_REQUIRED';return'ok'})()",
+    "why": "Verified: /apply/applyManually renders 'current step 1 of 7' and step 1 IS Sign In. There is no guest apply path, and the account is per-employer-tenant.",
+    "hard_rule": "The agent MUST NOT create the account or type the password. Creating accounts and entering credentials are prohibited actions - hand the tab to the human, who signs in, and only then resume the plan. Many tenants also require an emailed verification link, and NVIDIA's page warns that duplicate accounts 'may result in disqualification', so one account per tenant, stored by the human.",
+    "resume_after": "Once signed in, re-run preflight and continue from the upload phase."
+  },
+
+  "wait_parse": {
+    "why": "autofillWithResume parses server-side and repaints the wizard. Wait for the first name field to appear populated, then settle, then repair every step by hand - the parse mangles employment dates and splits job titles.",
+    "watch_selector": "[data-automation-id=legalNameSection_firstName]",
+    "timeout_ms": 20000,
+    "settle_ms": 2000,
+    "on_timeout": "continue - fall back to walking /apply/applyManually step by step",
+    "js": "(async()=>{const v=await __wait(()=>{const e=document.querySelector({{SEL}});return e&&e.value&&e.value.trim()?e.value:null},{{MS}});await __sleep({{SETTLE}});return v||'PARSE_TIMEOUT'})()"
+  },
+
+  "fields": [
+    {"key": "resume_pdf", "selector": "[data-automation-id=file-upload-input-ref], [data-automation-id=select-files], input[type=file]", "type": "file", "method": "file", "required": true, "phase": "upload", "verified": false},
+    {"key": "first_name", "selector": "[data-automation-id=legalNameSection_firstName]", "type": "text", "method": "react_set", "required": true, "verified": false},
+    {"key": "last_name", "selector": "[data-automation-id=legalNameSection_lastName]", "type": "text", "method": "react_set", "required": true, "verified": false},
+    {"key": "email", "selector": "[data-automation-id=email]", "type": "text", "method": "react_set", "required": true, "verified": false},
+    {"key": "phone_national", "selector": "[data-automation-id=phone-number]", "type": "text", "method": "react_set", "required": false, "verified": false,
+     "note": "Phone device type is a separate prompt button ([data-automation-id=phone-device-type]) - answer 'Mobile' via workday_prompt."},
+    {"key": "location", "selector": "[data-automation-id=addressSection_city]", "type": "text", "method": "react_set", "required": false, "verified": false}
+  ],
+
+  "field_notes": "Class names are hashed and useless; [data-automation-id] IS the selector strategy. Text inputs are ordinary <input> but React-controlled, so react_set is mandatory. There are NO <select> elements anywhere - every dropdown is a button that opens a [data-automation-id=promptOption] list (method workday_prompt). Dates are three separate spinbutton inputs (month/day/year). Multi-instance sections (Work Experience, Education, Websites) do not exist until you click their Add button, and each instance suffixes its automation ids (…-1, …-2).",
+
+  "question_map": {
+    "how": "Per-step discovery. Re-run after every wizard navigation - the SPA replaces the DOM and all refs go stale. NEVER fill by 'every visible text input': that trips the honeypot.",
+    "discover_js": "(async()=>{const DENY=/beecatcher|password|verifyPassword|createAccount/i;const out=[];document.querySelectorAll('[data-automation-id]').forEach(e=>{const a=e.getAttribute('data-automation-id');if(DENY.test(a))return;const tag=e.tagName.toLowerCase();const t=(e.type||'').toLowerCase();let type=null;if(t==='file')type='file';else if(tag==='textarea')type='textarea';else if(tag==='button'&&/select|prompt|dropdown/i.test(a+' '+(e.getAttribute('aria-haspopup')||''))||e.getAttribute('aria-haspopup')==='listbox')type='prompt';else if(t==='checkbox')type='checkbox';else if(t==='radio')type='radio_group';else if(tag==='input'&&t!=='hidden'&&t!=='submit'&&t!=='button')type=(e.getAttribute('role')==='spinbutton')?'spinbutton':'text';if(!type)return;out.push({automation_id:a,label:(e.getAttribute('aria-label')||__lbl(e)).replace(/\\s+/g,' ').slice(0,300),type:type,selector:'[data-automation-id='+CSS.escape(a)+']',required:e.required===true||e.getAttribute('aria-required')==='true'})});return out})()",
+    "methods_by_type": {"text": "react_set", "textarea": "react_set", "prompt": "workday_prompt", "radio_group": "radio_pick", "checkbox": "checkbox_set", "file": "file", "spinbutton": "react_set"},
+    "typical": [
+      "How did you hear about us? (required prompt, often with a second conditional prompt)",
+      "Are you legally authorized to work in <country>?",
+      "Will you now or in the future require sponsorship?",
+      "Have you ever been employed by <company> or a subsidiary?",
+      "Do you have any relatives employed by <company>?",
+      "Desired salary",
+      "Are you at least 18 years of age?",
+      "Have you signed a non-compete?",
+      "Government/defence tenants: export control, security clearance, citizenship",
+      "Voluntary self-ID (gender, race, veteran, CC-305 disability) plus an e-signature step: type full legal name + today's date"
+    ]
+  },
+
+  "verify": {
+    "how": "Per step, before clicking Next. plan() builds the readback over the fields it filled on that step.",
+    "fail_closed": "Any MISSING, empty required field, or NO_OPTION -> human_queue. Wizard state lives server-side; you cannot deep-link back into step 4, so a half-filled abandonment is expensive.",
+    "extra_js": "(async()=>{const errs=[...document.querySelectorAll('[data-automation-id*=error],[role=alert],[aria-invalid=true]')].map(e=>__txt(e)).filter(Boolean);const hp=document.querySelector('[data-automation-id=beecatcher]');return{errors:errs.slice(0,10),honeypot_dirty:!!(hp&&hp.value)}})()",
+    "honeypot_check": "If honeypot_dirty is true the run is already burned: STOP, do not submit, flag the tenant."
+  },
+
+  "submit": {
+    "selector": "[data-automation-id=bottom-navigation-next-button], [data-automation-id=submitButton], [data-automation-id=wd-CommandButton_uic_okButton]",
+    "gate": "db.claim(uid) must return before this click - it re-checks the tier-1 gate, auto_submit and the per-company caps. Irreversible.",
+    "verified": false,
+    "note": "The same control advances the wizard AND submits on the final step. Only the FINAL press is the irreversible one, but treat the whole tail as gated: read the step label before pressing.",
+    "confirm": "get_page_text for the submitted/received copy on the confirmation step"
+  },
+
+  "blockers": {
+    "login": {"type": "hard per-tenant account wall", "action": "human_queue", "see": "gate"},
+    "honeypot": {"selector": "input[data-automation-id=beecatcher]", "label": "Enter website. This input is for robots only, do not enter if you're human", "verified": true, "action": "NEVER write to it. Any fill-every-input pass trips it and burns the account."},
+    "captcha": {"type": "none on the tenant inspected (only googletagmanager + workday CDNs); reCAPTCHA is tenant-configurable", "on_challenge": "human_queue"},
+    "rate_limit": "IP rate limiting plus the honeypot is the bot defence. Keep per-tenant volume low.",
+    "iframe": null,
+    "shadow_dom": false
+  },
+
+  "do_not_touch": [
+    {"selector": "textarea[name=g-recaptcha-response], textarea[name=h-captcha-response], input[name=cf-turnstile-response]", "why": "Captcha token fields. Writing to one is a bypass attempt - out of scope, permanently. Detection only; a visible challenge is human_queue."},
+    {"selector": "input[data-automation-id=beecatcher]", "why": "HONEYPOT, verified live on every auth page. Labelled 'This input is for robots only'. Writing to it burns the account."},
+    {"selector": "[data-automation-id=password], [data-automation-id=verifyPassword], [data-automation-id=createAccountSubmitButton], [data-automation-id=signInSubmitButton], [data-automation-id=createAccountCheckbox]", "why": "Account creation and password entry are prohibited actions. The human does this."},
+    {"selector": "[data-automation-id=applyWithLinkedIn]", "why": "Bounces into LinkedIn OAuth - a permission grant the agent must not make."}
+  ]
+}

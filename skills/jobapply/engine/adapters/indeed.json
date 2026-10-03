@@ -1,0 +1,156 @@
+{
+ "platform": "indeed",
+ "priority": 60,
+ "enabled": true,
+ "difficulty": "hard",
+ "verified": "SOURCING verified dead, Aug 2026: /rss and the /jobs HTML search both return HTTP 403 to urllib even with a browser User-Agent, and the Publisher API is closed-partner only. The APPLY flow below is NOT verified first-hand - it is community knowledge. Discover every selector at runtime.",
+ "policy": "Apply inside the user's OWN already-logged-in Chrome profile, at their own residential IP, one application at a time. Sourcing stays on Adzuna/the ATS APIs. NEVER: proxies, User-Agent or fingerprint spoofing, headless-flag patching, or captcha solving - the 403 above is a bot wall and the only sanctioned response to a wall is not to go through it. Enabled by default: using this channel is a risk decision each user makes; disable it (enabled=false) if you don't accept it.",
+ "rate": {
+  "per_day": 20,
+  "min_seconds_between": 120,
+  "scope": "seconds between APPLICATIONS",
+  "why": "Indeed states it may limit daily applications and publishes no number; third-party 30-50/day flag thresholds have no primary source. 20 is a deliberately conservative floor on an undisclosed cap. A fixed minimum interval, no randomised jitter.",
+  "on_cap": "Any 'you have reached the limit', Cloudflare interstitial or captcha -> stop the Indeed channel for the day."
+ },
+ "match": {
+  "url": [
+   "indeed\\.com/(viewjob|jobs|job|applystart)",
+   "smartapply\\.indeed\\.com",
+   "[?&]jk=[0-9a-f]+",
+   "indeed\\.com"
+  ],
+  "dom": [
+   "button[aria-label=\"Apply with Indeed\"]",
+   "#ia-container"
+  ],
+  "notes": "jk=<id> is the dedup key. Glassdoor / ZipRecruiter / SimplyHired are deliberately NOT matched here: same posture, different DOM, and no adapter was written for them - they fall through to detect()=None -> human_queue, which is the honest answer. | 2026-08-23 VERIFIED: id/data-testid on the apply button are per-posting random 60-char hashes - never match on them. Search cards are [class*=job_seen_beacon] with [data-jk]; there is NO h2 in a card (title = first line of card innerText). [data-testid=company-name] and [data-testid=text-location] are still valid. Result pages contain decoy cards with synthetic jk values (cdef0123456789ab, 789abcdef0123456, f1e2d3c4b5a67890) - do not use those as dedup keys."
+ },
+ "apply_url": {
+  "rules": [],
+  "note": "No URL rule. The Apply control is a JS handoff that either opens the SmartApply flow (smartapply.indeed.com / an #ia-container iframe) or leaves Indeed for the employer's real ATS - preflight_js decides which."
+ },
+ "dom": "react",
+ "upload_first": false,
+ "order": [
+  "preflight",
+  "gate",
+  "questions",
+  "verify"
+ ],
+ "preflight_js": {
+  "why": "Tell Indeed Apply from 'Apply on company site', and get the form to top level so refs work.",
+  "js": "(async()=>{if(document.querySelector('#ia-container form,form[id*=apply],[data-testid*=ApplyForm]'))return'ok';if(/smartapply\\.indeed\\.com/.test(location.host))return'ok';const f=document.querySelector('#ia-container iframe,iframe[src*=apply.indeed.com],iframe[src*=smartapply]');if(f&&f.src)return'NAVIGATE:'+f.src;const b=document.querySelector('#indeedApplyButton,[data-testid=indeedApplyButton],#viewJobButtonLinkContainer a,button[aria-label*=Apply],a[aria-label*=Apply]');if(!b)return'NO_APPLY_BUTTON';const lbl=((b.getAttribute('aria-label')||'')+' '+__txt(b)+' '+(b.href||'')).toLowerCase();if(/company (web)?site|apply on|externalapply/.test(lbl))return'EXTERNAL';b.click();const g=await __wait(()=>document.querySelector('#ia-container iframe,#ia-container form')||(/smartapply/.test(location.host)?document.body:null),10000);return g?'RECHECK':'APPLY_TIMEOUT'})()",
+  "on": {
+   "ok": "continue",
+   "NAVIGATE:<url>": "navigate there so the form is top-level, then re-run preflight",
+   "RECHECK": "the apply flow opened - re-run preflight to resolve which shape it took",
+   "EXTERNAL": "not an Indeed application: follow it, re-run adapters.detect() on the landing URL and re-plan with that adapter. Do not count it against the Indeed rate.",
+   "NO_APPLY_BUTTON": "human_queue - expired posting or a layout this file does not know",
+   "APPLY_TIMEOUT": "human_queue"
+  }
+ },
+ "gate": {
+  "type": "session",
+  "blocking": true,
+  "route": "human_queue",
+  "detect_js": "(async()=>{const t=document.body.innerText||'';if(/just a moment|checking your browser|attention required|cf-browser-verification/i.test(t)||document.querySelector('#challenge-form,iframe[src*=challenges.cloudflare]'))return'BOT_WALL';if(/verify you are human|unusual traffic|are you a robot/i.test(t))return'BOT_WALL';if(document.querySelector('input[name=__email],#login-email-input,form[action*=account/login]'))return'SIGN_IN_REQUIRED';return'ok'})()",
+  "why": "Indeed fronts the whole property with bot management and requires an account to apply. Both are human-only.",
+  "hard_rule": "NEVER type the Indeed password, never solve the Cloudflare or captcha challenge, never retry through it from a different address. On BOT_WALL stop the Indeed channel for the day and tell the user.",
+  "resume_after": "The user signs in themselves in that tab; then re-run preflight."
+ },
+ "fields": [],
+ "fields_note": "Empty on purpose. Nothing in the SmartApply flow has a selector this project has verified, and writing plausible-looking ids would be a lie the readback could not catch. Everything comes from runtime discovery; contact fields map through answer_rules' name/email/phone rules.",
+ "flow": {
+  "shape": "SmartApply: contact -> resume (stored resume cards, or the Indeed-hosted resume) -> employer screening questions -> review -> submit. Step count is per-employer.",
+  "loop": "Re-run question_map.discover_js after every 'Continue' - it is a step wizard and the DOM is replaced each time.",
+  "next": [
+   "button:has-text('Continue')",
+   "[data-testid=continue-button]"
+  ],
+  "resume_step": "Select the existing stored/Indeed resume. Do not upload a fresh file per application.",
+  "proxied": "Indeed Apply frequently posts into the employer's real ATS behind the scenes; the confirmation is Indeed's, the downstream record is theirs. Expect the employer's own acknowledgement email, not Indeed's."
+ },
+ "question_map": {
+  "how": "Per-step discovery, labels only. Employer screening questions here are arbitrary and often required.",
+  "discover_js": "(async()=>{const roots=[document];document.querySelectorAll('*').forEach(e=>{if(e.shadowRoot)roots.push(e.shadowRoot)});const out=[];roots.forEach(r=>{r.querySelectorAll('input,select,textarea').forEach(e=>{const t=(e.type||'').toLowerCase();if(t==='hidden'||t==='submit')return;const tag=e.tagName.toLowerCase();let type=tag==='select'?'select':(t||'text');if(tag==='textarea')type='textarea';out.push({label:(e.getAttribute('aria-label')||__lbl(e)).replace(/\\s+/g,' ').slice(0,300),type:type,selector:__css(e),required:e.required===true||e.getAttribute('aria-required')==='true',value:t==='checkbox'||t==='radio'?e.checked:e.value,in_shadow:r!==document})})});return out})()",
+  "methods_by_type": {
+   "text": "react_set",
+   "textarea": "react_set",
+   "select": "select_by_text",
+   "radio": "radio_pick",
+   "checkbox": "checkbox_set",
+   "file": "file"
+  },
+  "typical": [
+   "Full name / email / phone (prefilled from the Indeed account)",
+   "Are you legally authorized to work in <country>?",
+   "Will you now or in the future require sponsorship?",
+   "How many years of experience do you have with <X>?",
+   "Do you have a valid <certification/licence>?",
+   "Are you willing to commute/relocate to <city>?",
+   "Expected salary",
+   "Employer free-text screener questions (arbitrary, often required)"
+  ]
+ },
+ "verify": {
+  "how": "Nothing is filled from a declared field list, so the readback is the discovery pass re-run plus the review step read back with get_page_text.",
+  "fail_closed": "Any required input still empty, any visible error, any in_shadow question, or a disabled Continue -> human_queue. Never submit unverified.",
+  "extra_js": "(async()=>{const root=document.querySelector('#ia-container,form,[data-testid*=Apply]')||document.body;const errs=[...root.querySelectorAll('[class*=error],[role=alert],[aria-invalid=true]')].map(e=>__txt(e)).filter(Boolean);const empty=[...root.querySelectorAll('input[required],textarea[required],select[required]')].filter(e=>e.type!=='file'&&!e.value).map(e=>__css(e));const nav=[...root.querySelectorAll('button')].filter(b=>/continue|submit|review/i.test(__txt(b)));return{errors:errs.slice(0,10),empty_required:empty.slice(0,10),blocked:nav.some(b=>b.disabled)}})()"
+ },
+ "submit": {
+  "selector": "[data-testid=submit-application], button[type=submit]",
+  "gate": "db.claim(uid) must return before this click - it re-checks the tier-1 gate, auto_submit and the per-company caps. Irreversible.",
+  "verified": false,
+  "note": "Unverified selector. Confirm with read_page that the control reads 'Submit your application' - 'Continue' looks identical to a selector and is not the irreversible one.",
+  "confirm": "get_page_text for the 'Your application has been submitted' copy."
+ },
+ "blockers": {
+  "policy": "Indeed Job Seeker Guidelines prohibit third-party bots and automated tools for applying, and name account closure as the consequence. Running the channel is each user's own risk decision, not a licence to disguise the automation.",
+  "http": "403 on every unauthenticated path with a browser User-Agent - sourcing via HTTP is dead. Discovery comes from Adzuna and the ATS APIs; this adapter only applies to a posting someone else found.",
+  "cloudflare": {
+   "type": "bot management in front of the whole property",
+   "on_challenge": "human_queue and stop the channel for the day",
+   "never": "No proxies, no UA or fingerprint spoofing, no solver."
+  },
+  "login": "Indeed account required to apply. The user signs in; the agent never types the password.",
+  "external_redirect": "'Apply on company site' leaves Indeed for the real ATS. preflight returns EXTERNAL; re-detect and hand off - and note the same posting probably already arrived from Greenhouse/Ashby/Lever, so check the dedup hash before applying twice.",
+  "iframe": "SmartApply often renders in an #ia-container iframe; navigate to the frame's own src so refs are top-level.",
+  "shadow_dom": false
+ },
+ "alternative": {
+  "use": "Adzuna",
+  "why": "Sourcing only. Public API with a free registered key, ~250 calls/day, clean JSON with stable ids and created timestamps - the sanctioned way to get broad-market inventory that Indeed's 403 denies. Belongs in discover.py, not here.",
+  "not_a_substitute_for": "Elite quant roles - Adzuna will not surface those."
+ },
+ "do_not_touch": [
+  {
+   "selector": "textarea[name=g-recaptcha-response], textarea[name=h-captcha-response], input[name=cf-turnstile-response]",
+   "why": "Captcha token fields. Writing to one is a bypass attempt - out of scope, permanently. Detection only; a visible challenge is human_queue."
+  },
+  {
+   "selector": "#challenge-form, iframe[src*=challenges.cloudflare]",
+   "why": "Bot wall. Detect, stop, tell the user. Solving or bypassing it is out of scope, permanently."
+  },
+  {
+   "selector": "input[name=__email], #login-email-input, input[type=password]",
+   "why": "Credential entry is a prohibited action. The user signs in."
+  },
+  {
+   "selector": "input[type=file]",
+   "why": "Use the stored Indeed resume. A fresh upload per application adds a signal and gains nothing."
+  }
+ ],
+ "selectors": {
+  "apply_button": "button[aria-label=\"Apply with Indeed\"]",
+  "search_card": "[class*=job_seen_beacon][data-jk]",
+  "card_title": "FIRST_LINE_OF_INNERTEXT",
+  "card_company": "[data-testid=\"company-name\"]",
+  "card_location": "[data-testid=\"text-location\"]",
+  "decoy_jks": [
+   "cdef0123456789ab",
+   "789abcdef0123456",
+   "f1e2d3c4b5a67890"
+  ]
+ },
+ "resume_policy": "Indeed applies with the resume STORED on the user's Indeed profile - do not upload from docs/variants/. input[type=file] stays on do_not_touch. If the stored resume is stale, that is a human task, not an upload."
+}

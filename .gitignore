@@ -1,0 +1,8 @@
+__pycache__/
+.DS_Store
+*.db
+**/applications/
+**/dashboard.html
+**/docs/master.md
+**/docs/variants/
+profile.json

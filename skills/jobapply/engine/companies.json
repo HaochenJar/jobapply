@@ -1,0 +1,4294 @@
+{
+  "_note": "Verified live 2026-08-23 by discover.py probes; expanded and re-verified 2026-08-23 (every live slug returned HTTP 200 with >0 open jobs at time of write). status=dead means the slug returned 404/empty; kept so nobody re-guesses it. tier: 1=quant/buyside/IB 2=quant-dev/DS/ML/fintech 3=broad analyst 4=AI engineering.",
+  "greenhouse": [
+    {
+      "slug": "janestreet",
+      "name": "Jane Street",
+      "tier": 1
+    },
+    {
+      "slug": "point72",
+      "name": "Point72",
+      "tier": 1
+    },
+    {
+      "slug": "jumptrading",
+      "name": "Jump Trading",
+      "tier": 1
+    },
+    {
+      "slug": "imc",
+      "name": "IMC Trading",
+      "tier": 1
+    },
+    {
+      "slug": "optiverus",
+      "name": "Optiver US",
+      "tier": 1
+    },
+    {
+      "slug": "towerresearchcapital",
+      "name": "Tower Research Capital",
+      "tier": 1
+    },
+    {
+      "slug": "virtu",
+      "name": "Virtu Financial",
+      "tier": 1
+    },
+    {
+      "slug": "schonfeld",
+      "name": "Schonfeld",
+      "tier": 1
+    },
+    {
+      "slug": "akunacapital",
+      "name": "Akuna Capital",
+      "tier": 1,
+      "no_fill_form": "POLICY DEAD END, not a broken form. Akuna Greenhouse forms require fields with no source of record in profile.json -- a work-authorization EXPIRY DATE, 'write out how your name is pronounced', a true-and-accurate certification, an ambiguous 'year you received your most recent degree', often a GPA select, and a TOP-PREFERENCE EXCLUSIVITY acknowledgment that forecloses every other Akuna req for the season. Route to human before spending a navigate."
+    },
+    {
+      "slug": "flowtraders",
+      "name": "Flow Traders",
+      "tier": 1
+    },
+    {
+      "slug": "oldmissioncapital",
+      "name": "Old Mission Capital",
+      "tier": 1,
+      "_no_fill_form_removed": "2026-08-25: entry was stale. The cross-origin-iframe blocker it described is solved \u2014 job-boards.greenhouse.io/embed/job_app?for=<slug>&token=<id> serves a fully fillable native form (verified live: board API returned a job id, embed URL returned a real form)."
+    },
+    {
+      "slug": "genevatrading",
+      "name": "Geneva Trading",
+      "tier": 1
+    },
+    {
+      "slug": "dvtrading",
+      "name": "DV Trading",
+      "tier": 1
+    },
+    {
+      "slug": "mangroup",
+      "name": "Man Group",
+      "tier": 1
+    },
+    {
+      "slug": "capstoneinvestmentadvisors",
+      "name": "Capstone Investment Advisors",
+      "tier": 1
+    },
+    {
+      "slug": "winton",
+      "name": "Winton",
+      "tier": 1
+    },
+    {
+      "slug": "artisanpartners",
+      "name": "Artisan Partners",
+      "tier": 1
+    },
+    {
+      "slug": "williamblair",
+      "name": "William Blair",
+      "tier": 1
+    },
+    {
+      "slug": "generalatlantic",
+      "name": "General Atlantic",
+      "tier": 1
+    },
+    {
+      "slug": "stripe",
+      "name": "Stripe",
+      "tier": 2
+    },
+    {
+      "slug": "coinbase",
+      "name": "Coinbase",
+      "tier": 2,
+      "_no_fill_form_removed": "2026-08-25: entry was stale. The cross-origin-iframe blocker it described is solved \u2014 job-boards.greenhouse.io/embed/job_app?for=<slug>&token=<id> serves a fully fillable native form (verified live: board API returned a job id, embed URL returned a real form)."
+    },
+    {
+      "slug": "affirm",
+      "name": "Affirm",
+      "tier": 2
+    },
+    {
+      "slug": "robinhood",
+      "name": "Robinhood",
+      "tier": 2
+    },
+    {
+      "slug": "sofi",
+      "name": "SoFi",
+      "tier": 2
+    },
+    {
+      "slug": "chime",
+      "name": "Chime",
+      "tier": 2
+    },
+    {
+      "slug": "betterment",
+      "name": "Betterment",
+      "tier": 2,
+      "_no_fill_form_removed": "2026-08-25: entry was stale. The cross-origin-iframe blocker it described is solved \u2014 job-boards.greenhouse.io/embed/job_app?for=<slug>&token=<id> serves a fully fillable native form (verified live: board API returned a job id, embed URL returned a real form)."
+    },
+    {
+      "slug": "brex",
+      "name": "Brex",
+      "tier": 2,
+      "_no_fill_form_removed": "2026-08-25: entry was stale. The cross-origin-iframe blocker it described is solved \u2014 job-boards.greenhouse.io/embed/job_app?for=<slug>&token=<id> serves a fully fillable native form (verified live: board API returned a job id, embed URL returned a real form)."
+    },
+    {
+      "slug": "gusto",
+      "name": "Gusto",
+      "tier": 2
+    },
+    {
+      "slug": "checkr",
+      "name": "Checkr",
+      "tier": 2
+    },
+    {
+      "slug": "samsara",
+      "name": "Samsara",
+      "tier": 2,
+      "no_fill_form": "POLICY DEAD END (conduct agreement), not a broken form. Every Samsara req carries a REQUIRED field labelled blandly 'AI Policy for Interviewers' whose hidden description reads: 'Please do not use any AI tools during any part of the interview process... Candidates found to be in violation of this policy may be immediately disqualified.' That is a commitment about the user's own future conduct in interviews -- their call, never a default. Detectable offline via boards-api.greenhouse.io/v1/boards/samsara/jobs/<id>?questions=true -- the label alone does not reveal it, only the description does. Route to human before navigating."
+    },
+    {
+      "slug": "flexport",
+      "name": "Flexport",
+      "tier": 2
+    },
+    {
+      "slug": "instacart",
+      "name": "Instacart",
+      "tier": 2
+    },
+    {
+      "slug": "lyft",
+      "name": "Lyft",
+      "tier": 2,
+      "_no_fill_form_removed": "2026-08-25: entry was stale. The cross-origin-iframe blocker it described is solved \u2014 job-boards.greenhouse.io/embed/job_app?for=<slug>&token=<id> serves a fully fillable native form (verified live: board API returned a job id, embed URL returned a real form)."
+    },
+    {
+      "slug": "pinterest",
+      "name": "Pinterest",
+      "tier": 2,
+      "_no_fill_form_removed": "2026-08-25: entry was stale. The cross-origin-iframe blocker it described is solved \u2014 job-boards.greenhouse.io/embed/job_app?for=<slug>&token=<id> serves a fully fillable native form (verified live: board API returned a job id, embed URL returned a real form)."
+    },
+    {
+      "slug": "reddit",
+      "name": "Reddit",
+      "tier": 2
+    },
+    {
+      "slug": "gitlab",
+      "name": "GitLab",
+      "tier": 2
+    },
+    {
+      "slug": "cloudflare",
+      "name": "Cloudflare",
+      "tier": 2
+    },
+    {
+      "slug": "airtable",
+      "name": "Airtable",
+      "tier": 2
+    },
+    {
+      "slug": "asana",
+      "name": "Asana",
+      "tier": 2
+    },
+    {
+      "slug": "dropbox",
+      "name": "Dropbox",
+      "tier": 2,
+      "_no_fill_form_removed": "2026-08-25: entry was stale. The cross-origin-iframe blocker it described is solved \u2014 job-boards.greenhouse.io/embed/job_app?for=<slug>&token=<id> serves a fully fillable native form (verified live: board API returned a job id, embed URL returned a real form)."
+    },
+    {
+      "slug": "twilio",
+      "name": "Twilio",
+      "tier": 2
+    },
+    {
+      "slug": "mongodb",
+      "name": "MongoDB",
+      "tier": 2
+    },
+    {
+      "slug": "elastic",
+      "name": "Elastic",
+      "tier": 2
+    },
+    {
+      "slug": "datadog",
+      "name": "Datadog",
+      "tier": 2
+    },
+    {
+      "slug": "sigmacomputing",
+      "name": "Sigma Computing",
+      "tier": 2
+    },
+    {
+      "slug": "figma",
+      "name": "Figma",
+      "tier": 2
+    },
+    {
+      "slug": "discord",
+      "name": "Discord",
+      "tier": 2
+    },
+    {
+      "slug": "vercel",
+      "name": "Vercel",
+      "tier": 2
+    },
+    {
+      "slug": "waymo",
+      "name": "Waymo",
+      "tier": 2,
+      "_no_fill_form_removed": "2026-08-25: entry was stale. The cross-origin-iframe blocker it described is solved \u2014 job-boards.greenhouse.io/embed/job_app?for=<slug>&token=<id> serves a fully fillable native form (verified live: board API returned a job id, embed URL returned a real form)."
+    },
+    {
+      "slug": "nuro",
+      "name": "Nuro",
+      "tier": 2
+    },
+    {
+      "slug": "alixpartners",
+      "name": "AlixPartners",
+      "tier": 3
+    },
+    {
+      "slug": "charlesriverassociates",
+      "name": "Charles River Associates",
+      "tier": 3
+    },
+    {
+      "slug": "thirdbridge",
+      "name": "Third Bridge",
+      "tier": 3
+    },
+    {
+      "slug": "alphasights",
+      "name": "AlphaSights",
+      "tier": 3
+    },
+    {
+      "slug": "guidepoint",
+      "name": "Guidepoint",
+      "tier": 3
+    },
+    {
+      "slug": "bcg",
+      "name": "Boston Consulting Group",
+      "tier": 3
+    },
+    {
+      "slug": "anthropic",
+      "name": "Anthropic",
+      "tier": 4
+    },
+    {
+      "slug": "databricks",
+      "name": "Databricks",
+      "tier": 4
+    },
+    {
+      "slug": "scaleai",
+      "name": "Scale AI",
+      "tier": 4
+    },
+    {
+      "slug": "citadel",
+      "status": "dead"
+    },
+    {
+      "slug": "citadelsecurities",
+      "status": "dead"
+    },
+    {
+      "slug": "hudsonrivertrading",
+      "status": "dead"
+    },
+    {
+      "slug": "twosigma",
+      "status": "dead"
+    },
+    {
+      "slug": "deshaw",
+      "status": "dead"
+    },
+    {
+      "slug": "drw",
+      "status": "dead"
+    },
+    {
+      "slug": "susquehanna",
+      "status": "dead"
+    },
+    {
+      "slug": "millennium",
+      "status": "dead"
+    },
+    {
+      "slug": "balyasny",
+      "status": "dead"
+    },
+    {
+      "slug": "bridgewater",
+      "status": "dead"
+    },
+    {
+      "slug": "aqrcapitalmanagement",
+      "status": "dead"
+    },
+    {
+      "slug": "squarepoint",
+      "status": "dead"
+    },
+    {
+      "slug": "xtxmarkets",
+      "status": "dead"
+    },
+    {
+      "slug": "quantlab",
+      "status": "dead"
+    },
+    {
+      "slug": "radixtrading",
+      "status": "dead"
+    },
+    {
+      "slug": "peak6",
+      "status": "dead"
+    },
+    {
+      "slug": "tradeweb",
+      "status": "dead"
+    },
+    {
+      "slug": "headlandstech",
+      "status": "dead"
+    },
+    {
+      "slug": "wolverinetrading",
+      "status": "dead"
+    },
+    {
+      "slug": "belvederetradingllc",
+      "status": "dead"
+    },
+    {
+      "slug": "jefferies",
+      "status": "dead"
+    },
+    {
+      "slug": "evercore",
+      "status": "dead"
+    },
+    {
+      "slug": "moelis",
+      "status": "dead"
+    },
+    {
+      "slug": "houlihanlokey",
+      "status": "dead"
+    },
+    {
+      "slug": "lazard",
+      "status": "dead"
+    },
+    {
+      "slug": "pjtpartners",
+      "status": "dead"
+    },
+    {
+      "slug": "blackstone",
+      "status": "dead"
+    },
+    {
+      "slug": "kkr",
+      "status": "dead"
+    },
+    {
+      "slug": "carlyle",
+      "status": "dead"
+    },
+    {
+      "slug": "apollo",
+      "status": "dead"
+    },
+    {
+      "slug": "marshallwace",
+      "status": "dead"
+    },
+    {
+      "slug": "tpg",
+      "status": "dead"
+    },
+    {
+      "slug": "openai",
+      "status": "dead"
+    },
+    {
+      "slug": "notion",
+      "status": "dead"
+    },
+    {
+      "slug": "plaid",
+      "status": "dead"
+    },
+    {
+      "slug": "doordash",
+      "status": "dead"
+    },
+    {
+      "slug": "snowflake",
+      "status": "dead"
+    },
+    {
+      "slug": "confluent",
+      "status": "dead"
+    },
+    {
+      "slug": "hashicorp",
+      "status": "dead"
+    },
+    {
+      "slug": "palantir",
+      "status": "dead"
+    },
+    {
+      "slug": "anduril",
+      "status": "dead"
+    },
+    {
+      "slug": "shieldai",
+      "status": "dead"
+    },
+    {
+      "slug": "huggingface",
+      "status": "dead"
+    },
+    {
+      "slug": "wealthfront",
+      "status": "dead"
+    },
+    {
+      "slug": "addepar",
+      "status": "dead"
+    },
+    {
+      "slug": "ramp",
+      "status": "dead"
+    },
+    {
+      "slug": "cruise",
+      "status": "dead"
+    },
+    {
+      "slug": "benchling",
+      "status": "dead"
+    },
+    {
+      "slug": "exoduspoint",
+      "name": "ExodusPoint",
+      "tier": 1
+    },
+    {
+      "slug": "squarepointcapital",
+      "name": "Squarepoint Capital",
+      "tier": 1
+    },
+    {
+      "slug": "quberesearchandtechnologies",
+      "name": "Qube Research & Technologies",
+      "tier": 1
+    },
+    {
+      "slug": "quadraturecapital",
+      "name": "Quadrature Capital",
+      "tier": 1
+    },
+    {
+      "slug": "gsacapital",
+      "name": "GSA",
+      "tier": 1
+    },
+    {
+      "slug": "aqr",
+      "name": "AQR",
+      "tier": 1,
+      "_no_fill_form_removed": "2026-08-25: entry was stale. The cross-origin-iframe blocker it described is solved \u2014 job-boards.greenhouse.io/embed/job_app?for=<slug>&token=<id> serves a fully fillable native form (verified live: board API returned a job id, embed URL returned a real form)."
+    },
+    {
+      "slug": "transmarketgroup",
+      "name": "TransMarket Group",
+      "tier": 1
+    },
+    {
+      "slug": "vaticlabs",
+      "name": "Vatic Labs",
+      "tier": 1
+    },
+    {
+      "slug": "pdtpartners",
+      "name": "PDT Partners",
+      "tier": 1
+    },
+    {
+      "slug": "fiveringsllc",
+      "name": "Five Rings LLC - Careers",
+      "tier": 1
+    },
+    {
+      "slug": "davinciderivatives",
+      "name": "Da Vinci",
+      "tier": 1
+    },
+    {
+      "slug": "simplextrading",
+      "name": "Simplex Trading",
+      "tier": 1
+    },
+    {
+      "slug": "grahamcapitalmanagement",
+      "name": "Graham Capital Management, L.P.",
+      "tier": 1
+    },
+    {
+      "slug": "generalcatalyst",
+      "name": "General Catalyst",
+      "tier": 1
+    },
+    {
+      "slug": "bessemerventurepartners",
+      "name": "Bessemer Venture Partners",
+      "tier": 1
+    },
+    {
+      "slug": "a16z",
+      "name": "a16z",
+      "tier": 1
+    },
+    {
+      "slug": "numerix",
+      "name": "Numerix",
+      "tier": 2
+    },
+    {
+      "slug": "clearstreet",
+      "name": "Clear Street",
+      "tier": 1
+    },
+    {
+      "slug": "cohensteers",
+      "name": "Cohen & Steers",
+      "tier": 1
+    },
+    {
+      "slug": "mercury",
+      "name": "Mercury",
+      "tier": 2
+    },
+    {
+      "slug": "lithic",
+      "name": "Lithic",
+      "tier": 2
+    },
+    {
+      "slug": "alloy",
+      "name": "Alloy",
+      "tier": 2
+    },
+    {
+      "slug": "block",
+      "name": "Block",
+      "tier": 2
+    },
+    {
+      "slug": "monzo",
+      "name": "Monzo",
+      "tier": 2
+    },
+    {
+      "slug": "adyen",
+      "name": "Adyen",
+      "tier": 2
+    },
+    {
+      "slug": "upgrade",
+      "name": "Upgrade",
+      "tier": 2
+    },
+    {
+      "slug": "upstart",
+      "name": "Upstart",
+      "tier": 2
+    },
+    {
+      "slug": "oportun",
+      "name": "Oportun",
+      "tier": 2
+    },
+    {
+      "slug": "stashinvest",
+      "name": "Stash",
+      "tier": 2
+    },
+    {
+      "slug": "public",
+      "name": "Public",
+      "tier": 2
+    },
+    {
+      "slug": "tastytrade",
+      "name": "tastytrade",
+      "tier": 2
+    },
+    {
+      "slug": "alpaca",
+      "name": "Alpaca",
+      "tier": 2
+    },
+    {
+      "slug": "drivewealth",
+      "name": "DriveWealth",
+      "tier": 2
+    },
+    {
+      "slug": "altruist",
+      "name": "Altruist",
+      "tier": 2
+    },
+    {
+      "slug": "carta",
+      "name": "Carta",
+      "tier": 2
+    },
+    {
+      "slug": "gemini",
+      "name": "Gemini",
+      "tier": 2
+    },
+    {
+      "slug": "ripple",
+      "name": "Ripple",
+      "tier": 2
+    },
+    {
+      "slug": "fireblocks",
+      "name": "Fireblocks",
+      "tier": 2
+    },
+    {
+      "slug": "consensys",
+      "name": "Consensys",
+      "tier": 2
+    },
+    {
+      "slug": "bitgo",
+      "name": "BitGo",
+      "tier": 2
+    },
+    {
+      "slug": "justworks",
+      "name": "Justworks",
+      "tier": 2
+    },
+    {
+      "slug": "remotecom",
+      "name": "Remote",
+      "tier": 2
+    },
+    {
+      "slug": "tripactions",
+      "name": "Navan",
+      "tier": 2
+    },
+    {
+      "slug": "billcom",
+      "name": "BILL",
+      "tier": 2
+    },
+    {
+      "slug": "melio",
+      "name": "Melio",
+      "tier": 2
+    },
+    {
+      "slug": "cloverhealth",
+      "name": "Clover Health",
+      "tier": 2
+    },
+    {
+      "slug": "komodohealth",
+      "name": "Komodo Health",
+      "tier": 2
+    },
+    {
+      "slug": "flatironhealth",
+      "name": "Flatiron Health",
+      "tier": 2
+    },
+    {
+      "slug": "recursionpharmaceuticals",
+      "name": "Recursion",
+      "tier": 2
+    },
+    {
+      "slug": "zocdoc",
+      "name": "Zocdoc",
+      "tier": 2
+    },
+    {
+      "slug": "doximity",
+      "name": "Doximity",
+      "tier": 2
+    },
+    {
+      "slug": "truveta",
+      "name": "Truveta",
+      "tier": 2
+    },
+    {
+      "slug": "garnerhealth",
+      "name": "Garner Health",
+      "tier": 2
+    },
+    {
+      "slug": "airbnb",
+      "name": "Airbnb",
+      "tier": 3
+    },
+    {
+      "slug": "roblox",
+      "name": "Roblox",
+      "tier": 3
+    },
+    {
+      "slug": "riotgames",
+      "name": "Riot Games",
+      "tier": 3
+    },
+    {
+      "slug": "epicgames",
+      "name": "Epic Games",
+      "tier": 3
+    },
+    {
+      "slug": "twitch",
+      "name": "Twitch",
+      "tier": 3
+    },
+    {
+      "slug": "amplitude",
+      "name": "Amplitude",
+      "tier": 3
+    },
+    {
+      "slug": "mixpanel",
+      "name": "Mixpanel",
+      "tier": 3
+    },
+    {
+      "slug": "pendo",
+      "name": "Pendo",
+      "tier": 3
+    },
+    {
+      "slug": "newrelic",
+      "name": "New Relic",
+      "tier": 3
+    },
+    {
+      "slug": "sumologic",
+      "name": "Sumo Logic",
+      "tier": 3
+    },
+    {
+      "slug": "grafanalabs",
+      "name": "Grafana Labs",
+      "tier": 3
+    },
+    {
+      "slug": "circleci",
+      "name": "CircleCI",
+      "tier": 3
+    },
+    {
+      "slug": "jfrog",
+      "name": "JFrog",
+      "tier": 3
+    },
+    {
+      "slug": "okta",
+      "name": "Okta",
+      "tier": 3
+    },
+    {
+      "slug": "zscaler",
+      "name": "Zscaler",
+      "tier": 3
+    },
+    {
+      "slug": "netskope",
+      "name": "Netskope",
+      "tier": 3
+    },
+    {
+      "slug": "orcasecurity",
+      "name": "Orca Security",
+      "tier": 3
+    },
+    {
+      "slug": "tanium",
+      "name": "Tanium",
+      "tier": 3
+    },
+    {
+      "slug": "abnormalsecurity",
+      "name": "Abnormal",
+      "tier": 3
+    },
+    {
+      "slug": "fastly",
+      "name": "Fastly",
+      "tier": 3
+    },
+    {
+      "slug": "netlify",
+      "name": "Netlify",
+      "tier": 3
+    },
+    {
+      "slug": "planetscale",
+      "name": "PlanetScale",
+      "tier": 3
+    },
+    {
+      "slug": "cockroachlabs",
+      "name": "Cockroach Labs",
+      "tier": 3
+    },
+    {
+      "slug": "neo4j",
+      "name": "Neo4j",
+      "tier": 3
+    },
+    {
+      "slug": "singlestore",
+      "name": "SingleStore",
+      "tier": 3
+    },
+    {
+      "slug": "fivetran",
+      "name": "Fivetran",
+      "tier": 3
+    },
+    {
+      "slug": "starburst",
+      "name": "Starburst",
+      "tier": 3
+    },
+    {
+      "slug": "dremio",
+      "name": "Dremio",
+      "tier": 3
+    },
+    {
+      "slug": "c3iot",
+      "name": "C3 AI",
+      "tier": 3,
+      "_no_fill_form_removed": "2026-08-25: entry was stale. The cross-origin-iframe blocker it described is solved \u2014 job-boards.greenhouse.io/embed/job_app?for=<slug>&token=<id> serves a fully fillable native form (verified live: board API returned a job id, embed URL returned a real form)."
+    },
+    {
+      "slug": "dataiku",
+      "name": "Dataiku",
+      "tier": 3
+    },
+    {
+      "slug": "dominodatalab",
+      "name": "Domino Data Lab",
+      "tier": 3
+    },
+    {
+      "slug": "hextechnologies",
+      "name": "Hex Technologies",
+      "tier": 3
+    },
+    {
+      "slug": "hightouch",
+      "name": "Hightouch",
+      "tier": 3
+    },
+    {
+      "slug": "braze",
+      "name": "Braze",
+      "tier": 3
+    },
+    {
+      "slug": "iterable",
+      "name": "Iterable",
+      "tier": 3
+    },
+    {
+      "slug": "klaviyo",
+      "name": "Klaviyo",
+      "tier": 3
+    },
+    {
+      "slug": "attentive",
+      "name": "Attentive",
+      "tier": 3
+    },
+    {
+      "slug": "customerio",
+      "name": "Customer.io",
+      "tier": 3
+    },
+    {
+      "slug": "intercom",
+      "name": "Fin",
+      "tier": 3
+    },
+    {
+      "slug": "gongio",
+      "name": "Gong.io",
+      "tier": 3
+    },
+    {
+      "slug": "salesloft",
+      "name": "Clari + Salesloft",
+      "tier": 3
+    },
+    {
+      "slug": "zoominfo",
+      "name": "ZoomInfo Technologies LLC",
+      "tier": 3
+    },
+    {
+      "slug": "verkada",
+      "name": "Verkada",
+      "tier": 3
+    },
+    {
+      "slug": "lucidmotors",
+      "name": "Lucid Motors",
+      "tier": 3
+    },
+    {
+      "slug": "relativity",
+      "name": "Relativity Space",
+      "tier": 3
+    },
+    {
+      "slug": "rocketlab",
+      "name": "Rocket Lab Corporation",
+      "tier": 3
+    },
+    {
+      "slug": "planetlabs",
+      "name": "Planet",
+      "tier": 3
+    },
+    {
+      "slug": "astranis",
+      "name": "Astranis",
+      "tier": 3
+    },
+    {
+      "slug": "vardaspace",
+      "name": "Varda Space Industries",
+      "tier": 3
+    },
+    {
+      "slug": "faire",
+      "name": "Faire",
+      "tier": 3
+    },
+    {
+      "slug": "stockx",
+      "name": "StockX",
+      "tier": 3
+    },
+    {
+      "slug": "goatgroup",
+      "name": "GOAT Group",
+      "tier": 3
+    },
+    {
+      "slug": "peloton",
+      "name": "Peloton",
+      "tier": 3
+    },
+    {
+      "slug": "calm",
+      "name": "Calm.com",
+      "tier": 3
+    },
+    {
+      "slug": "duolingo",
+      "name": "Duolingo",
+      "tier": 3
+    },
+    {
+      "slug": "coursera",
+      "name": "Coursera",
+      "tier": 3
+    },
+    {
+      "slug": "udemy",
+      "name": "Udemy",
+      "tier": 3
+    },
+    {
+      "slug": "life360",
+      "name": "Life360",
+      "tier": 3
+    },
+    {
+      "slug": "nextdoor",
+      "name": "Nextdoor",
+      "tier": 3
+    },
+    {
+      "slug": "tripadvisor",
+      "name": "Tripadvisor",
+      "tier": 3
+    },
+    {
+      "slug": "toast",
+      "name": "Toast",
+      "tier": 3
+    },
+    {
+      "slug": "sweetgreen",
+      "name": "sweetgreen",
+      "tier": 3
+    },
+    {
+      "slug": "urbancompass",
+      "name": "Compass",
+      "tier": 3
+    },
+    {
+      "slug": "blend",
+      "name": "Blend",
+      "tier": 3
+    },
+    {
+      "slug": "roofstock",
+      "name": "Roofstock",
+      "tier": 3
+    },
+    {
+      "slug": "pacaso",
+      "name": "Pacaso",
+      "tier": 3
+    },
+    {
+      "slug": "everlaw",
+      "name": "Everlaw",
+      "tier": 3
+    },
+    {
+      "slug": "xai",
+      "name": "SpaceXAI",
+      "tier": 4
+    },
+    {
+      "slug": "gleanwork",
+      "name": "Glean",
+      "tier": 4
+    },
+    {
+      "slug": "togetherai",
+      "name": "Together AI",
+      "tier": 4
+    },
+    {
+      "slug": "sambanovasystems",
+      "name": "SambaNova",
+      "tier": 4
+    },
+    {
+      "slug": "labelbox",
+      "name": "Labelbox",
+      "tier": 4
+    },
+    {
+      "slug": "snorkelai",
+      "name": "Snorkel AI",
+      "tier": 4
+    },
+    {
+      "slug": "imbue",
+      "name": "Imbue",
+      "tier": 4
+    },
+    {
+      "slug": "descript",
+      "name": "Descript",
+      "tier": 4
+    },
+    {
+      "slug": "stabilityai",
+      "name": "Stability AI",
+      "tier": 4
+    },
+    {
+      "slug": "vectara",
+      "name": "Vectara",
+      "tier": 4
+    },
+    {
+      "slug": "arizeai",
+      "name": "Arize AI",
+      "tier": 4
+    },
+    {
+      "slug": "coreweave",
+      "name": "CoreWeave",
+      "tier": 4
+    },
+    {
+      "slug": "nebius",
+      "name": "Nebius",
+      "tier": 4
+    },
+    {
+      "slug": "etchedai",
+      "name": "Etched",
+      "tier": 4
+    },
+    {
+      "slug": "tenstorrent",
+      "name": "Tenstorrent",
+      "tier": 4
+    },
+    {
+      "slug": "lightmatter",
+      "name": "Lightmatter",
+      "tier": 4
+    },
+    {
+      "slug": "youcom",
+      "name": "You.com",
+      "tier": 4
+    },
+    {
+      "slug": "inflectionai",
+      "name": "Inflection AI",
+      "tier": 4
+    },
+    {
+      "slug": "cresta",
+      "name": "Cresta",
+      "tier": 4
+    },
+    {
+      "slug": "observeai",
+      "name": "Observe.AI",
+      "tier": 4
+    },
+    {
+      "slug": "assemblyai",
+      "name": "AssemblyAI",
+      "tier": 4
+    },
+    {
+      "slug": "speechmatics",
+      "name": "Speechmatics",
+      "tier": 4
+    },
+    {
+      "slug": "otterai",
+      "name": "Otter.ai",
+      "tier": 4
+    },
+    {
+      "slug": "extend",
+      "name": "Extend",
+      "tier": 4
+    },
+    {
+      "slug": "instabase",
+      "name": "Instabase",
+      "tier": 4
+    },
+    {
+      "slug": "alphasense",
+      "name": "AlphaSense",
+      "tier": 4
+    },
+    {
+      "slug": "sixfold",
+      "name": "Sixfold",
+      "tier": 4
+    },
+    {
+      "slug": "eve",
+      "name": "Eve",
+      "tier": 4
+    },
+    {
+      "slug": "isomorphiclabs",
+      "name": "Isomorphic Labs",
+      "tier": 4
+    },
+    {
+      "slug": "figureai",
+      "name": "Figure",
+      "tier": 4
+    },
+    {
+      "slug": "agilityrobotics",
+      "name": "Agility Robotics",
+      "tier": 4
+    },
+    {
+      "slug": "pathrobotics",
+      "name": "Path Robotics",
+      "tier": 4
+    },
+    {
+      "slug": "flyzipline",
+      "name": "Zipline",
+      "tier": 4
+    },
+    {
+      "slug": "andurilindustries",
+      "name": "Anduril Industries",
+      "tier": 4
+    },
+    {
+      "slug": "pacificfusion",
+      "name": "Pacific Fusion",
+      "tier": 4
+    },
+    {
+      "slug": "oklo",
+      "name": "Oklo",
+      "tier": 4
+    },
+    {
+      "slug": "coalition",
+      "name": "Coalition, Inc.",
+      "tier": 2,
+      "_no_fill_form_removed": "2026-08-25: entry was stale. The cross-origin-iframe blocker it described is solved \u2014 job-boards.greenhouse.io/embed/job_app?for=<slug>&token=<id> serves a fully fillable native form (verified live: board API returned a job id, embed URL returned a real form)."
+    },
+    {
+      "slug": "ethoslife",
+      "name": "Ethos Life",
+      "tier": 2
+    },
+    {
+      "slug": "pieinsurance",
+      "name": "Pie Insurance",
+      "tier": 2
+    },
+    {
+      "slug": "zetaglobal",
+      "name": "Zeta Global",
+      "tier": 3
+    },
+    {
+      "slug": "crossriverbank",
+      "name": "Cross River",
+      "tier": 2,
+      "_no_fill_form_removed": "2026-08-25: entry was stale. The cross-origin-iframe blocker it described is solved \u2014 job-boards.greenhouse.io/embed/job_app?for=<slug>&token=<id> serves a fully fillable native form (verified live: board API returned a job id, embed URL returned a real form)."
+    },
+    {
+      "slug": "chainguard",
+      "name": "Chainguard",
+      "tier": 2
+    },
+    {
+      "slug": "launchdarkly",
+      "name": "LaunchDarkly",
+      "tier": 2
+    },
+    {
+      "slug": "make",
+      "name": "Make",
+      "tier": 2
+    },
+    {
+      "slug": "workato",
+      "name": "Workato",
+      "tier": 2,
+      "_no_fill_form_removed": "2026-08-25: entry was stale. The cross-origin-iframe blocker it described is solved \u2014 job-boards.greenhouse.io/embed/job_app?for=<slug>&token=<id> serves a fully fillable native form (verified live: board API returned a job id, embed URL returned a real form)."
+    },
+    {
+      "slug": "edb",
+      "name": "EDB",
+      "tier": 2
+    },
+    {
+      "slug": "yugabyte",
+      "name": "YugabyteDB",
+      "tier": 2
+    },
+    {
+      "slug": "collibra",
+      "name": "Collibra",
+      "tier": 2
+    },
+    {
+      "slug": "bigid",
+      "name": "BigID",
+      "tier": 2
+    },
+    {
+      "slug": "onetrust",
+      "name": "OneTrust",
+      "tier": 2
+    },
+    {
+      "slug": "highnote",
+      "name": "Highnote",
+      "tier": 2
+    },
+    {
+      "slug": "greenhouse",
+      "name": "Greenhouse",
+      "tier": 2
+    },
+    {
+      "slug": "lattice",
+      "name": "Lattice",
+      "tier": 2
+    },
+    {
+      "slug": "cultureamp",
+      "name": "Culture Amp",
+      "tier": 2
+    },
+    {
+      "slug": "humaninterest",
+      "name": "Human Interest",
+      "tier": 2
+    },
+    {
+      "slug": "vestwell",
+      "name": "Vestwell",
+      "tier": 2
+    },
+    {
+      "slug": "ethic",
+      "name": "ethic.com (new)",
+      "tier": 2
+    },
+    {
+      "slug": "jetbrains",
+      "name": "JetBrains",
+      "tier": 3
+    },
+    {
+      "slug": "postman",
+      "name": "Postman",
+      "tier": 3
+    },
+    {
+      "slug": "descope",
+      "name": "Descope",
+      "tier": 3
+    },
+    {
+      "slug": "qualtrics",
+      "name": "Qualtrics",
+      "tier": 3
+    },
+    {
+      "slug": "typeform",
+      "name": "Typeform",
+      "tier": 3
+    },
+    {
+      "slug": "webflow",
+      "name": "Webflow",
+      "tier": 3
+    },
+    {
+      "slug": "squarespace",
+      "name": "Squarespace",
+      "tier": 3
+    },
+    {
+      "slug": "duda",
+      "name": "Duda",
+      "tier": 3
+    },
+    {
+      "slug": "contentful",
+      "name": "Contentful",
+      "tier": 3
+    },
+    {
+      "slug": "storyblok",
+      "name": "Storyblok",
+      "tier": 3
+    },
+    {
+      "slug": "optimove",
+      "name": "Optimove",
+      "tier": 3
+    },
+    {
+      "slug": "bloomreach",
+      "name": "Bloomreach",
+      "tier": 3
+    },
+    {
+      "slug": "algolia",
+      "name": "Algolia",
+      "tier": 3
+    },
+    {
+      "slug": "yext",
+      "name": "Yext",
+      "tier": 3
+    },
+    {
+      "slug": "similarweb",
+      "name": "Similarweb",
+      "tier": 3
+    },
+    {
+      "slug": "sproutsocial",
+      "name": "Sprout Social",
+      "tier": 3
+    },
+    {
+      "slug": "hootsuite",
+      "name": "Hootsuite",
+      "tier": 3
+    },
+    {
+      "slug": "later",
+      "name": "Later",
+      "tier": 3
+    },
+    {
+      "slug": "emplifi",
+      "name": "Emplifi",
+      "tier": 3
+    },
+    {
+      "slug": "tubitv",
+      "name": "Tubi",
+      "tier": 3
+    },
+    {
+      "slug": "bandwidth",
+      "name": "Bandwidth",
+      "tier": 3
+    },
+    {
+      "slug": "vonage",
+      "name": "Vonage",
+      "tier": 3
+    },
+    {
+      "slug": "dialpad",
+      "name": "Dialpad",
+      "tier": 3
+    },
+    {
+      "slug": "five9",
+      "name": "Five9",
+      "tier": 3
+    },
+    {
+      "slug": "nice",
+      "name": "NICE",
+      "tier": 3
+    },
+    {
+      "slug": "worldlabs",
+      "name": "World Labs",
+      "tier": 4
+    },
+    {
+      "slug": "goodfire",
+      "name": "Goodfire",
+      "tier": 4
+    },
+    {
+      "slug": "haizelabs",
+      "name": "Haize Labs",
+      "tier": 4
+    },
+    {
+      "slug": "turing",
+      "name": "Turing",
+      "tier": 4
+    },
+    {
+      "slug": "invisibletech",
+      "name": "Invisible Technologies",
+      "tier": 4
+    },
+    {
+      "slug": "warp",
+      "name": "Warp",
+      "tier": 4
+    },
+    {
+      "slug": "gradientai",
+      "name": "Gradient AI",
+      "tier": 4
+    },
+    {
+      "slug": "coherehealth",
+      "name": "Cohere Health",
+      "tier": 4
+    },
+    {
+      "slug": "comet",
+      "name": "Comet",
+      "tier": 4
+    },
+    {
+      "slug": "heygen",
+      "name": "HeyGen",
+      "tier": 4
+    },
+    {
+      "slug": "humeai",
+      "name": "Hume AI",
+      "tier": 4
+    },
+    {
+      "slug": "scopely",
+      "name": "Scopely",
+      "tier": 3
+    },
+    {
+      "slug": "bird",
+      "name": "Bird",
+      "tier": 4
+    },
+    {
+      "slug": "dollarshaveclub",
+      "name": "Dollar Shave Club",
+      "tier": 4
+    },
+    {
+      "slug": "thrivemarket",
+      "name": "Thrive Market",
+      "tier": 4
+    },
+    {
+      "slug": "parachutehome",
+      "name": "Parachute Home",
+      "tier": 4
+    },
+    {
+      "slug": "naughtydog",
+      "name": "Naughty Dog",
+      "tier": 4
+    },
+    {
+      "slug": "ringdna",
+      "name": "RingDNA",
+      "tier": 4
+    },
+    {
+      "slug": "current",
+      "name": "Current",
+      "tier": 2
+    },
+    {
+      "slug": "earnin",
+      "name": "EarnIn",
+      "tier": 2
+    },
+    {
+      "slug": "wise",
+      "name": "Wise",
+      "tier": 2
+    },
+    {
+      "slug": "n26",
+      "name": "N26",
+      "tier": 2
+    },
+    {
+      "slug": "sezzle",
+      "name": "Sezzle",
+      "tier": 2
+    },
+    {
+      "slug": "oscar",
+      "name": "Oscar Health",
+      "tier": 2
+    },
+    {
+      "slug": "orchard",
+      "name": "Orchard",
+      "tier": 3
+    },
+    {
+      "slug": "homelight",
+      "name": "HomeLight",
+      "tier": 3
+    },
+    {
+      "slug": "doma",
+      "name": "Doma",
+      "tier": 2
+    },
+    {
+      "slug": "matic",
+      "name": "Matic Insurance",
+      "tier": 3
+    },
+    {
+      "slug": "highradius",
+      "name": "HighRadius",
+      "tier": 2
+    },
+    {
+      "slug": "lincolninternational",
+      "name": "Lincoln International",
+      "tier": 1
+    },
+    {
+      "slug": "focusfinancialpartners",
+      "name": "Focus Financial Partners",
+      "tier": 1
+    },
+    {
+      "slug": "proshares",
+      "name": "ProShares",
+      "tier": 1
+    },
+    {
+      "slug": "harrisassociates",
+      "name": "Harris Associates",
+      "tier": 1
+    },
+    {
+      "slug": "smartasset",
+      "name": "SmartAsset",
+      "tier": 2
+    },
+    {
+      "slug": "jumpcrypto",
+      "name": "Jump Crypto",
+      "tier": 1
+    },
+    {
+      "slug": "b2c2",
+      "name": "B2C2",
+      "tier": 1
+    },
+    {
+      "slug": "vikingglobalinvestors",
+      "name": "Viking Global Investors",
+      "tier": 1
+    },
+    {
+      "slug": "worldquant",
+      "name": "WorldQuant",
+      "tier": 1
+    },
+    {
+      "slug": "falconx",
+      "name": "FalconX",
+      "tier": 2
+    },
+    {
+      "slug": "gsrmarkets",
+      "name": "GSR",
+      "tier": 1
+    },
+    {
+      "slug": "icapitalnetwork",
+      "name": "iCapital",
+      "tier": 2
+    },
+    {
+      "slug": "fartherfinance",
+      "name": "Farther",
+      "tier": 2
+    },
+    {
+      "slug": "viseai",
+      "name": "Vise",
+      "tier": 2
+    },
+    {
+      "slug": "equityzen",
+      "name": "EquityZen",
+      "tier": 2
+    },
+    {
+      "slug": "forgeglobal",
+      "name": "Forge Global",
+      "tier": 2
+    },
+    {
+      "slug": "moonfare",
+      "name": "Moonfare",
+      "tier": 2
+    },
+    {
+      "slug": "iex",
+      "name": "IEX Group",
+      "tier": 1
+    },
+    {
+      "slug": "memx",
+      "name": "MEMX",
+      "tier": 1
+    },
+    {
+      "slug": "pinwheelapi",
+      "name": "Pinwheel",
+      "tier": 2
+    },
+    {
+      "slug": "step",
+      "name": "Step",
+      "tier": 2
+    },
+    {
+      "slug": "juno",
+      "name": "Juno",
+      "tier": 2
+    },
+    {
+      "slug": "slideinsurance",
+      "name": "Slide Insurance",
+      "tier": 2
+    },
+    {
+      "slug": "homeward",
+      "name": "Homeward",
+      "tier": 2
+    },
+    {
+      "slug": "knock",
+      "name": "Knock",
+      "tier": 2
+    },
+    {
+      "slug": "hometap",
+      "name": "Hometap",
+      "tier": 2
+    },
+    {
+      "slug": "payoneer",
+      "name": "Payoneer",
+      "tier": 2
+    },
+    {
+      "slug": "trolley",
+      "name": "Trolley",
+      "tier": 2
+    },
+    {
+      "slug": "forter",
+      "name": "Forter",
+      "tier": 2
+    },
+    {
+      "slug": "riskified",
+      "name": "Riskified",
+      "tier": 2
+    },
+    {
+      "slug": "bitso",
+      "name": "Bitso",
+      "tier": 2
+    },
+    {
+      "slug": "copperco",
+      "name": "Copper",
+      "tier": 2
+    },
+    {
+      "slug": "21shares",
+      "name": "21Shares",
+      "tier": 2
+    },
+    {
+      "slug": "bitpanda",
+      "name": "Bitpanda",
+      "tier": 2
+    },
+    {
+      "slug": "okx",
+      "name": "OKX",
+      "tier": 2
+    },
+    {
+      "slug": "piermontbank",
+      "name": "Piermont Bank",
+      "tier": 2
+    },
+    {
+      "slug": "insurify",
+      "name": "Insurify",
+      "tier": 2
+    },
+    {
+      "slug": "federato",
+      "name": "Federato",
+      "tier": 2
+    },
+    {
+      "slug": "sagent",
+      "name": "Sagent",
+      "tier": 2
+    },
+    {
+      "slug": "billtrust",
+      "name": "Billtrust",
+      "tier": 2
+    },
+    {
+      "slug": "strike",
+      "name": "Strike",
+      "tier": 2
+    },
+    {
+      "slug": "bybit",
+      "name": "Bybit",
+      "tier": 2
+    },
+    {
+      "slug": "kronosresearch",
+      "name": "Kronos Research",
+      "tier": 1
+    },
+    {
+      "slug": "ebanx",
+      "name": "EBANX",
+      "tier": 2
+    },
+    {
+      "slug": "thunes",
+      "name": "Thunes",
+      "tier": 2
+    },
+    {
+      "slug": "complyadvantage",
+      "name": "ComplyAdvantage",
+      "tier": 2
+    },
+    {
+      "slug": "feedzai",
+      "name": "Feedzai",
+      "tier": 2
+    },
+    {
+      "slug": "jumio",
+      "name": "Jumio",
+      "tier": 2
+    },
+    {
+      "slug": "qualia",
+      "name": "Qualia",
+      "tier": 2
+    },
+    {
+      "slug": "pathstone",
+      "name": "Pathstone",
+      "tier": 1
+    },
+    {
+      "slug": "splitero",
+      "name": "Splitero",
+      "tier": 2
+    },
+    {
+      "slug": "unlock",
+      "name": "Unlock Technologies",
+      "tier": 2
+    },
+    {
+      "slug": "pointdigitalfinance",
+      "name": "Point Digital Finance",
+      "tier": 2
+    },
+    {
+      "slug": "perpay",
+      "name": "Perpay",
+      "tier": 2
+    },
+    {
+      "slug": "happymoney",
+      "name": "Happy Money",
+      "tier": 2
+    },
+    {
+      "slug": "zestyai",
+      "name": "Zesty.ai",
+      "tier": 2
+    },
+    {
+      "slug": "coterieinsurance",
+      "name": "Coterie Insurance",
+      "tier": 2
+    },
+    {
+      "slug": "counterpart",
+      "name": "Counterpart",
+      "tier": 2
+    },
+    {
+      "slug": "ownwell",
+      "name": "Ownwell",
+      "tier": 2
+    },
+    {
+      "slug": "databento",
+      "name": "Databento",
+      "tier": 3
+    },
+    {
+      "slug": "tamara",
+      "name": "Tamara",
+      "tier": 2
+    },
+    {
+      "slug": "clarityai",
+      "name": "Clarity AI",
+      "tier": 2
+    },
+    {
+      "slug": "nansen",
+      "name": "Nansen",
+      "tier": 3
+    },
+    {
+      "slug": "cais",
+      "name": "CAIS",
+      "tier": 2
+    },
+    {
+      "slug": "chronograph",
+      "name": "Chronograph",
+      "tier": 2
+    },
+    {
+      "slug": "hover",
+      "name": "HOVER",
+      "tier": 2
+    },
+    {
+      "slug": "carbonchain",
+      "name": "CarbonChain",
+      "tier": 2
+    },
+    {
+      "slug": "legalist",
+      "name": "Legalist",
+      "tier": 1
+    },
+    {
+      "slug": "yipitdata",
+      "name": "YipitData",
+      "tier": 3
+    },
+    {
+      "slug": "ansa",
+      "name": "Ansa",
+      "tier": 2
+    },
+    {
+      "slug": "pontera",
+      "name": "Pontera",
+      "tier": 2
+    },
+    {
+      "slug": "clara",
+      "name": "Clara",
+      "tier": 2
+    },
+    {
+      "slug": "xendit",
+      "name": "Xendit",
+      "tier": 2
+    },
+    {
+      "slug": "gocardless",
+      "name": "GoCardless",
+      "tier": 2
+    },
+    {
+      "slug": "truelayer",
+      "name": "TrueLayer",
+      "tier": 2
+    },
+    {
+      "slug": "array",
+      "name": "Array",
+      "tier": 2
+    },
+    {
+      "slug": "trumid",
+      "name": "Trumid",
+      "tier": 2
+    },
+    {
+      "slug": "gelbergroup",
+      "name": "Gelber Group",
+      "tier": 1
+    },
+    {
+      "slug": "bluecrestcapitalmanagement",
+      "name": "BlueCrest Capital Management",
+      "tier": 1
+    },
+    {
+      "slug": "chicagotrading",
+      "name": "Chicago Trading Company (CTC)",
+      "tier": 1
+    },
+    {
+      "slug": "novacredit",
+      "name": "Nova Credit",
+      "tier": 2
+    },
+    {
+      "slug": "bvnk",
+      "name": "BVNK",
+      "tier": 2
+    },
+    {
+      "slug": "resilience",
+      "name": "Resilience (Cyber Insurance)",
+      "tier": 3
+    },
+    {
+      "slug": "zestai",
+      "name": "Zest AI",
+      "tier": 3
+    },
+    {
+      "slug": "amount",
+      "name": "Amount (FIS Amount)",
+      "tier": 3
+    },
+    {
+      "slug": "branch",
+      "name": "Branch",
+      "tier": 3
+    },
+    {
+      "slug": "veriff",
+      "name": "Veriff",
+      "tier": 2
+    },
+    {
+      "slug": "idnow",
+      "name": "IDnow",
+      "tier": 3
+    },
+    {
+      "slug": "ledgy",
+      "name": "Ledgy",
+      "tier": 3
+    },
+    {
+      "slug": "boldin",
+      "name": "Boldin",
+      "tier": 3
+    },
+    {
+      "slug": "selffinancial",
+      "name": "Self Financial",
+      "tier": 3
+    },
+    {
+      "slug": "wisetack",
+      "name": "Wisetack",
+      "tier": 3
+    },
+    {
+      "slug": "taxbit",
+      "name": "TaxBit",
+      "tier": 2
+    },
+    {
+      "slug": "maxwell",
+      "name": "Maxwell Financial",
+      "tier": 2
+    },
+    {
+      "slug": "payit",
+      "name": "PayIt",
+      "tier": 2
+    },
+    {
+      "slug": "globalizationpartners",
+      "name": "Globalization Partners (G-P)",
+      "tier": 2
+    },
+    {
+      "slug": "collectivehealth",
+      "name": "Collective Health",
+      "tier": 2
+    },
+    {
+      "slug": "cloverly",
+      "name": "Cloverly",
+      "tier": 2
+    },
+    {
+      "slug": "arive",
+      "name": "Arive",
+      "tier": 2
+    },
+    {
+      "slug": "sidecarhealth",
+      "name": "Sidecar Health",
+      "tier": 2
+    },
+    {
+      "slug": "standardmetrics",
+      "name": "Standard Metrics",
+      "tier": 2
+    },
+    {
+      "slug": "solarisbank",
+      "name": "Solaris",
+      "tier": 2
+    },
+    {
+      "slug": "aloyoga",
+      "name": "Alo Yoga",
+      "tier": 3,
+      "note": "LA non-finance, added 2026-09-10"
+    },
+    {
+      "slug": "fashionnova",
+      "name": "Fashion Nova",
+      "tier": 3,
+      "note": "LA non-finance, added 2026-09-10"
+    },
+    {
+      "slug": "faradayfuture",
+      "name": "Faraday Future",
+      "tier": 3,
+      "note": "LA non-finance, added 2026-09-10"
+    },
+    {
+      "slug": "crunchyroll",
+      "name": "Crunchyroll",
+      "tier": 3,
+      "note": "LA non-finance, added 2026-09-10"
+    },
+    {
+      "slug": "ziprecruiter",
+      "name": "ZipRecruiter",
+      "tier": 3,
+      "note": "LA non-finance, added 2026-09-10"
+    },
+    {
+      "slug": "gumgum",
+      "name": "GumGum",
+      "tier": 3,
+      "note": "LA non-finance, added 2026-09-10"
+    },
+    {
+      "slug": "axs",
+      "name": "AXS",
+      "tier": 3,
+      "note": "LA non-finance, added 2026-09-10"
+    },
+    {
+      "slug": "thetradedesk",
+      "name": "The Trade Desk",
+      "tier": 3,
+      "note": "LA non-finance, added 2026-09-10"
+    },
+    {
+      "slug": "drsquatch",
+      "name": "Dr. Squatch",
+      "tier": 3,
+      "note": "LA non-finance, added 2026-09-10"
+    },
+    {
+      "slug": "pmc",
+      "name": "Penske Media",
+      "tier": 3,
+      "note": "LA non-finance, added 2026-09-10"
+    },
+    {
+      "slug": "genius",
+      "name": "Genius",
+      "tier": 3,
+      "note": "LA non-finance, added 2026-09-10"
+    },
+    {
+      "slug": "flip",
+      "name": "Flip",
+      "tier": 3,
+      "note": "LA non-finance, added 2026-09-10"
+    }
+  ],
+  "ashby": [
+    {
+      "slug": "openai",
+      "name": "OpenAI",
+      "tier": 4
+    },
+    {
+      "slug": "cohere",
+      "name": "Cohere",
+      "tier": 4
+    },
+    {
+      "slug": "sierra",
+      "name": "Sierra",
+      "tier": 4
+    },
+    {
+      "slug": "cursor",
+      "name": "Cursor",
+      "tier": 4
+    },
+    {
+      "slug": "perplexity",
+      "name": "Perplexity",
+      "tier": 4
+    },
+    {
+      "slug": "elevenlabs",
+      "name": "ElevenLabs",
+      "tier": 4
+    },
+    {
+      "slug": "harvey",
+      "name": "Harvey",
+      "tier": 4
+    },
+    {
+      "slug": "langchain",
+      "name": "LangChain",
+      "tier": 4
+    },
+    {
+      "slug": "modal",
+      "name": "Modal",
+      "tier": 4,
+      "_no_fill_form_removed": "2026-08-25: stale. Ashby board reachable \u2014 canonical jobs.ashbyhq.com/<slug>/<id>/application returns 200 and the posting API lists live jobs (openrouter 23, modal 31). If the SPA renders 'Page not found' in-browser, append ?embed=js to the same URL."
+    },
+    {
+      "slug": "pinecone",
+      "name": "Pinecone",
+      "tier": 4
+    },
+    {
+      "slug": "weaviate",
+      "name": "Weaviate",
+      "tier": 4
+    },
+    {
+      "slug": "deepgram",
+      "name": "Deepgram",
+      "tier": 4
+    },
+    {
+      "slug": "decagon",
+      "name": "Decagon",
+      "tier": 4
+    },
+    {
+      "slug": "writer",
+      "name": "Writer",
+      "tier": 4
+    },
+    {
+      "slug": "character",
+      "name": "Character.AI",
+      "tier": 4
+    },
+    {
+      "slug": "runway",
+      "name": "Runway",
+      "tier": 4
+    },
+    {
+      "slug": "suno",
+      "name": "Suno",
+      "tier": 4
+    },
+    {
+      "slug": "midjourney",
+      "name": "Midjourney",
+      "tier": 4
+    },
+    {
+      "slug": "thinkingmachines",
+      "name": "Thinking Machines Lab",
+      "tier": 4
+    },
+    {
+      "slug": "physicalintelligence",
+      "name": "Physical Intelligence",
+      "tier": 4
+    },
+    {
+      "slug": "cerebras",
+      "name": "Cerebras",
+      "tier": 4
+    },
+    {
+      "slug": "lambda",
+      "name": "Lambda",
+      "tier": 4
+    },
+    {
+      "slug": "crusoe",
+      "name": "Crusoe",
+      "tier": 4
+    },
+    {
+      "slug": "fireworks",
+      "name": "Fireworks AI",
+      "tier": 4
+    },
+    {
+      "slug": "baseten",
+      "name": "Baseten",
+      "tier": 4
+    },
+    {
+      "slug": "openrouter",
+      "name": "OpenRouter",
+      "tier": 4,
+      "_no_fill_form_removed": "2026-08-25: stale. Ashby board reachable \u2014 canonical jobs.ashbyhq.com/<slug>/<id>/application returns 200 and the posting API lists live jobs (openrouter 23, modal 31). If the SPA renders 'Page not found' in-browser, append ?embed=js to the same URL."
+    },
+    {
+      "slug": "browserbase",
+      "name": "Browserbase",
+      "tier": 4
+    },
+    {
+      "slug": "e2b",
+      "name": "E2B",
+      "tier": 4
+    },
+    {
+      "slug": "lovable",
+      "name": "Lovable",
+      "tier": 4
+    },
+    {
+      "slug": "replit",
+      "name": "Replit",
+      "tier": 4
+    },
+    {
+      "slug": "poolside",
+      "name": "Poolside",
+      "tier": 4
+    },
+    {
+      "slug": "cognition",
+      "name": "Cognition",
+      "tier": 4
+    },
+    {
+      "slug": "mercor",
+      "name": "Mercor",
+      "tier": 4
+    },
+    {
+      "slug": "abridge",
+      "name": "Abridge",
+      "tier": 4
+    },
+    {
+      "slug": "openevidence",
+      "name": "OpenEvidence",
+      "tier": 4
+    },
+    {
+      "slug": "applied",
+      "name": "Applied Intuition",
+      "tier": 4
+    },
+    {
+      "slug": "voleon",
+      "name": "The Voleon Group",
+      "tier": 1
+    },
+    {
+      "slug": "rogo",
+      "name": "Rogo",
+      "tier": 1
+    },
+    {
+      "slug": "kalshi",
+      "name": "Kalshi",
+      "tier": 1
+    },
+    {
+      "slug": "polymarket",
+      "name": "Polymarket",
+      "tier": 1
+    },
+    {
+      "slug": "ramp",
+      "name": "Ramp",
+      "tier": 2
+    },
+    {
+      "slug": "notion",
+      "name": "Notion",
+      "tier": 2
+    },
+    {
+      "slug": "linear",
+      "name": "Linear",
+      "tier": 2
+    },
+    {
+      "slug": "vanta",
+      "name": "Vanta",
+      "tier": 2
+    },
+    {
+      "slug": "plaid",
+      "name": "Plaid",
+      "tier": 2
+    },
+    {
+      "slug": "sardine",
+      "name": "Sardine",
+      "tier": 2
+    },
+    {
+      "slug": "parafin",
+      "name": "Parafin",
+      "tier": 2
+    },
+    {
+      "slug": "imprint",
+      "name": "Imprint",
+      "tier": 2
+    },
+    {
+      "slug": "unit",
+      "name": "Unit",
+      "tier": 2
+    },
+    {
+      "slug": "column",
+      "name": "Column",
+      "tier": 2
+    },
+    {
+      "slug": "found",
+      "name": "Found",
+      "tier": 2
+    },
+    {
+      "slug": "zip",
+      "name": "Zip",
+      "tier": 2
+    },
+    {
+      "slug": "posthog",
+      "name": "PostHog",
+      "tier": 2
+    },
+    {
+      "slug": "supabase",
+      "name": "Supabase",
+      "tier": 2
+    },
+    {
+      "slug": "neon",
+      "name": "Neon",
+      "tier": 2
+    },
+    {
+      "slug": "railway",
+      "name": "Railway",
+      "tier": 2
+    },
+    {
+      "slug": "handshake",
+      "name": "Handshake",
+      "tier": 2
+    },
+    {
+      "slug": "eightsleep",
+      "name": "Eight Sleep",
+      "tier": 2
+    },
+    {
+      "slug": "doss",
+      "name": "Doss",
+      "tier": 2
+    },
+    {
+      "slug": "cambio",
+      "name": "Cambio",
+      "tier": 2
+    },
+    {
+      "slug": "blockworks",
+      "name": "Blockworks",
+      "tier": 3
+    },
+    {
+      "slug": "anthropic",
+      "status": "dead"
+    },
+    {
+      "slug": "xai",
+      "status": "dead"
+    },
+    {
+      "slug": "mistral",
+      "status": "dead"
+    },
+    {
+      "slug": "glean",
+      "status": "dead"
+    },
+    {
+      "slug": "together",
+      "status": "dead"
+    },
+    {
+      "slug": "replicate",
+      "status": "dead"
+    },
+    {
+      "slug": "scale",
+      "status": "dead"
+    },
+    {
+      "slug": "scaleai",
+      "status": "dead"
+    },
+    {
+      "slug": "brex",
+      "status": "dead"
+    },
+    {
+      "slug": "clay",
+      "status": "dead"
+    },
+    {
+      "slug": "mercury",
+      "status": "dead"
+    },
+    {
+      "slug": "deel",
+      "status": "dead"
+    },
+    {
+      "slug": "hebbia",
+      "status": "dead"
+    },
+    {
+      "slug": "arcesium",
+      "status": "dead"
+    },
+    {
+      "slug": "squarepoint",
+      "status": "dead"
+    },
+    {
+      "slug": "imc",
+      "status": "dead"
+    },
+    {
+      "slug": "figure",
+      "status": "dead"
+    },
+    {
+      "slug": "ssi",
+      "status": "dead"
+    },
+    {
+      "slug": "turing",
+      "status": "dead"
+    },
+    {
+      "slug": "groq",
+      "status": "dead"
+    },
+    {
+      "slug": "coreweave",
+      "status": "dead"
+    },
+    {
+      "slug": "sambanova",
+      "status": "dead"
+    },
+    {
+      "slug": "windsurf",
+      "status": "dead"
+    },
+    {
+      "slug": "skild",
+      "status": "dead"
+    },
+    {
+      "slug": "worldlabs",
+      "status": "dead"
+    },
+    {
+      "slug": "assemblyai",
+      "status": "dead"
+    },
+    {
+      "slug": "retool",
+      "status": "dead"
+    },
+    {
+      "slug": "rippling",
+      "status": "dead"
+    },
+    {
+      "slug": "stripe",
+      "status": "dead"
+    },
+    {
+      "slug": "figma",
+      "status": "dead"
+    },
+    {
+      "slug": "attentive",
+      "status": "dead"
+    },
+    {
+      "slug": "sequoia",
+      "name": "Sequoia Benefits",
+      "tier": 3
+    },
+    {
+      "slug": "dimensional",
+      "name": "Dimensional Fund Advisors",
+      "tier": 1
+    },
+    {
+      "slug": "moderntreasury",
+      "name": "Modern Treasury",
+      "tier": 2
+    },
+    {
+      "slug": "persona",
+      "name": "Persona",
+      "tier": 2
+    },
+    {
+      "slug": "middesk",
+      "name": "Middesk",
+      "tier": 2
+    },
+    {
+      "slug": "airwallex",
+      "name": "Airwallex",
+      "tier": 2
+    },
+    {
+      "slug": "dave",
+      "name": "Dave",
+      "tier": 2
+    },
+    {
+      "slug": "acorns",
+      "name": "Acorns",
+      "tier": 2
+    },
+    {
+      "slug": "paxos",
+      "name": "Paxos",
+      "tier": 2
+    },
+    {
+      "slug": "uniswap",
+      "name": "Uniswap Labs",
+      "tier": 2
+    },
+    {
+      "slug": "anrok",
+      "name": "Anrok",
+      "tier": 2
+    },
+    {
+      "slug": "numeral",
+      "name": "Numeral",
+      "tier": 2
+    },
+    {
+      "slug": "headway",
+      "name": "Headway",
+      "tier": 2
+    },
+    {
+      "slug": "hims-and-hers",
+      "name": "Hims and Hers",
+      "tier": 2
+    },
+    {
+      "slug": "benchling",
+      "name": "Benchling",
+      "tier": 2
+    },
+    {
+      "slug": "insitro",
+      "name": "Insitro",
+      "tier": 2
+    },
+    {
+      "slug": "color-health",
+      "name": "Color Health",
+      "tier": 2
+    },
+    {
+      "slug": "commure",
+      "name": "Athelas",
+      "tier": 2
+    },
+    {
+      "slug": "clickup",
+      "name": "ClickUp",
+      "tier": 3
+    },
+    {
+      "slug": "miro",
+      "name": "Miro",
+      "tier": 3
+    },
+    {
+      "slug": "fullstory",
+      "name": "FullStory",
+      "tier": 3
+    },
+    {
+      "slug": "materialsecurity",
+      "name": "Material Security",
+      "tier": 3
+    },
+    {
+      "slug": "drata",
+      "name": "Drata",
+      "tier": 3
+    },
+    {
+      "slug": "render",
+      "name": "Render",
+      "tier": 3
+    },
+    {
+      "slug": "redis",
+      "name": "Redis",
+      "tier": 3
+    },
+    {
+      "slug": "influxdata",
+      "name": "InfluxData",
+      "tier": 3
+    },
+    {
+      "slug": "confluent",
+      "name": "Confluent",
+      "tier": 3
+    },
+    {
+      "slug": "snowflake",
+      "name": "Snowflake",
+      "tier": 3
+    },
+    {
+      "slug": "airbyte",
+      "name": "Airbyte",
+      "tier": 3
+    },
+    {
+      "slug": "deepnote",
+      "name": "Deepnote",
+      "tier": 3
+    },
+    {
+      "slug": "strava",
+      "name": "Strava",
+      "tier": 3
+    },
+    {
+      "slug": "ambiencehealthcare",
+      "name": "Ambience Healthcare",
+      "tier": 4
+    },
+    {
+      "slug": "surge-ai",
+      "name": "Surge AI",
+      "tier": 4
+    },
+    {
+      "slug": "lumaai",
+      "name": "Luma AI",
+      "tier": 4
+    },
+    {
+      "slug": "synthesia",
+      "name": "Synthesia",
+      "tier": 4
+    },
+    {
+      "slug": "trychroma",
+      "name": "Chroma",
+      "tier": 4
+    },
+    {
+      "slug": "llamaindex",
+      "name": "LlamaIndex",
+      "tier": 4
+    },
+    {
+      "slug": "braintrust",
+      "name": "Braintrust",
+      "tier": 4
+    },
+    {
+      "slug": "anyscale",
+      "name": "Anyscale",
+      "tier": 4
+    },
+    {
+      "slug": "rain",
+      "name": "Rain AI",
+      "tier": 4
+    },
+    {
+      "slug": "rev",
+      "name": "Rev",
+      "tier": 4
+    },
+    {
+      "slug": "read-ai",
+      "name": "Read AI",
+      "tier": 4
+    },
+    {
+      "slug": "granola",
+      "name": "Granola",
+      "tier": 4
+    },
+    {
+      "slug": "mem0",
+      "name": "Mem0",
+      "tier": 4
+    },
+    {
+      "slug": "unstructured",
+      "name": "Unstructured",
+      "tier": 4
+    },
+    {
+      "slug": "reducto",
+      "name": "Reducto",
+      "tier": 4
+    },
+    {
+      "slug": "norm-ai",
+      "name": "Norm AI",
+      "tier": 4
+    },
+    {
+      "slug": "tennr",
+      "name": "Tennr",
+      "tier": 4
+    },
+    {
+      "slug": "elicit",
+      "name": "Elicit",
+      "tier": 4
+    },
+    {
+      "slug": "cradlebio",
+      "name": "Cradle Bio",
+      "tier": 4
+    },
+    {
+      "slug": "chaidiscovery",
+      "name": "Chai Discovery",
+      "tier": 4
+    },
+    {
+      "slug": "iambic-therapeutics",
+      "name": "Iambic Therapeutics",
+      "tier": 4
+    },
+    {
+      "slug": "latentlabs",
+      "name": "Latent Labs",
+      "tier": 4
+    },
+    {
+      "slug": "periodic-labs",
+      "name": "Periodic Labs",
+      "tier": 4
+    },
+    {
+      "slug": "1x",
+      "name": "1X Technologies",
+      "tier": 4
+    },
+    {
+      "slug": "cobot",
+      "name": "Cobot",
+      "tier": 4
+    },
+    {
+      "slug": "standardbots",
+      "name": "Standard Bots",
+      "tier": 4
+    },
+    {
+      "slug": "saronic",
+      "name": "Saronic",
+      "tier": 4
+    },
+    {
+      "slug": "base-power",
+      "name": "Base Power",
+      "tier": 4,
+      "no_fill_form": "POLICY DEAD END, not a broken form. Base Power reqs carry a REQUIRED 10-option 'Are you legally authorized to work in the U.S.?' select with no truthful option for an F-1 student before post-completion OPT starts: 7 are present-tense statuses (US citizen / H-1B / TN / E-3 / 'I currently hold OPT' / STEM OPT / CPT), 2 assert sponsorship NOW, and 1 ('not currently authorized') contradicts the frozen authorized_to_work=Yes. Route to human before navigating."
+    },
+    {
+      "slug": "radiant",
+      "name": "Radiant Nuclear",
+      "tier": 4
+    },
+    {
+      "slug": "helion",
+      "name": "Helion Energy",
+      "tier": 4
+    },
+    {
+      "slug": "lemonade",
+      "name": "Lemonade",
+      "tier": 2
+    },
+    {
+      "slug": "kin",
+      "name": "Kin Insurance",
+      "tier": 2
+    },
+    {
+      "slug": "openly",
+      "name": "Openly",
+      "tier": 2
+    },
+    {
+      "slug": "meridianlink",
+      "name": "MeridianLink",
+      "tier": 2
+    },
+    {
+      "slug": "sentry",
+      "name": "Sentry",
+      "tier": 2
+    },
+    {
+      "slug": "zapier",
+      "name": "Zapier",
+      "tier": 2
+    },
+    {
+      "slug": "merge",
+      "name": "Merge",
+      "tier": 2
+    },
+    {
+      "slug": "nango",
+      "name": "Nango",
+      "tier": 2
+    },
+    {
+      "slug": "paragon",
+      "name": "Paragon",
+      "tier": 2
+    },
+    {
+      "slug": "stedi",
+      "name": "Stedi",
+      "tier": 2
+    },
+    {
+      "slug": "materialize",
+      "name": "Materialize",
+      "tier": 2
+    },
+    {
+      "slug": "prefect",
+      "name": "Prefect",
+      "tier": 2
+    },
+    {
+      "slug": "astronomer",
+      "name": "Astronomer",
+      "tier": 2
+    },
+    {
+      "slug": "montecarlodata",
+      "name": "Monte Carlo Data",
+      "tier": 2
+    },
+    {
+      "slug": "atlan",
+      "name": "Atlan",
+      "tier": 2
+    },
+    {
+      "slug": "skyflow",
+      "name": "Skyflow",
+      "tier": 2
+    },
+    {
+      "slug": "payabli",
+      "name": "Payabli",
+      "tier": 2
+    },
+    {
+      "slug": "astra",
+      "name": "Astra",
+      "tier": 2
+    },
+    {
+      "slug": "ashby",
+      "name": "Ashby",
+      "tier": 2
+    },
+    {
+      "slug": "wealth-com",
+      "name": "Wealth com",
+      "tier": 2
+    },
+    {
+      "slug": "artafinance",
+      "name": "Arta Finance",
+      "tier": 2
+    },
+    {
+      "slug": "kong",
+      "name": "Kong",
+      "tier": 3
+    },
+    {
+      "slug": "apollo-graphql",
+      "name": "Apollo GraphQL",
+      "tier": 3
+    },
+    {
+      "slug": "workos",
+      "name": "WorkOS",
+      "tier": 3
+    },
+    {
+      "slug": "stytch",
+      "name": "Stytch",
+      "tier": 3
+    },
+    {
+      "slug": "resend",
+      "name": "Resend",
+      "tier": 3
+    },
+    {
+      "slug": "planhat",
+      "name": "Planhat",
+      "tier": 3
+    },
+    {
+      "slug": "vitally",
+      "name": "Vitally",
+      "tier": 3
+    },
+    {
+      "slug": "sprig",
+      "name": "Sprig",
+      "tier": 3
+    },
+    {
+      "slug": "mazedesign",
+      "name": "Maze",
+      "tier": 3
+    },
+    {
+      "slug": "dovetail",
+      "name": "Dovetail",
+      "tier": 3
+    },
+    {
+      "slug": "surveymonkey",
+      "name": "SurveyMonkey",
+      "tier": 3
+    },
+    {
+      "slug": "sanity",
+      "name": "Sanity",
+      "tier": 3
+    },
+    {
+      "slug": "constructor",
+      "name": "Constructor",
+      "tier": 3
+    },
+    {
+      "slug": "buffer",
+      "name": "Buffer",
+      "tier": 3
+    },
+    {
+      "slug": "mux",
+      "name": "Mux",
+      "tier": 3
+    },
+    {
+      "slug": "kustomer",
+      "name": "Kustomer",
+      "tier": 3
+    },
+    {
+      "slug": "helpscout",
+      "name": "Help Scout",
+      "tier": 3
+    },
+    {
+      "slug": "reflectionai",
+      "name": "Reflection AI",
+      "tier": 4
+    },
+    {
+      "slug": "liquid-ai",
+      "name": "Liquid AI",
+      "tier": 4
+    },
+    {
+      "slug": "nousresearch",
+      "name": "Nous Research",
+      "tier": 4
+    },
+    {
+      "slug": "primeintellect",
+      "name": "Prime Intellect",
+      "tier": 4
+    },
+    {
+      "slug": "exa",
+      "name": "Exa",
+      "tier": 4
+    },
+    {
+      "slug": "firecrawl",
+      "name": "Firecrawl",
+      "tier": 4
+    },
+    {
+      "slug": "twelve-labs",
+      "name": "Twelve Labs",
+      "tier": 4
+    },
+    {
+      "slug": "roboflow",
+      "name": "Roboflow",
+      "tier": 4
+    },
+    {
+      "slug": "encord",
+      "name": "Encord",
+      "tier": 4
+    },
+    {
+      "slug": "distyl",
+      "name": "Distyl AI",
+      "tier": 4
+    },
+    {
+      "slug": "factory",
+      "name": "Factory AI",
+      "tier": 4
+    },
+    {
+      "slug": "zed",
+      "name": "Zed Industries",
+      "tier": 4
+    },
+    {
+      "slug": "graphite",
+      "name": "Graphite",
+      "tier": 4
+    },
+    {
+      "slug": "greptile",
+      "name": "Greptile",
+      "tier": 4
+    },
+    {
+      "slug": "mintlify",
+      "name": "Mintlify",
+      "tier": 4
+    },
+    {
+      "slug": "depot",
+      "name": "Depot",
+      "tier": 4
+    },
+    {
+      "slug": "namespace",
+      "name": "Namespace",
+      "tier": 4
+    },
+    {
+      "slug": "blacksmith",
+      "name": "Blacksmith",
+      "tier": 4
+    },
+    {
+      "slug": "turbopuffer",
+      "name": "Turbopuffer",
+      "tier": 4
+    },
+    {
+      "slug": "lancedb",
+      "name": "LanceDB",
+      "tier": 4
+    },
+    {
+      "slug": "letta",
+      "name": "Letta",
+      "tier": 4
+    },
+    {
+      "slug": "langfuse",
+      "name": "Langfuse",
+      "tier": 4
+    },
+    {
+      "slug": "nomic",
+      "name": "Nomic",
+      "tier": 3
+    },
+    {
+      "slug": "union",
+      "name": "Union ai",
+      "tier": 4
+    },
+    {
+      "slug": "sfcompute",
+      "name": "SF Compute",
+      "tier": 4
+    },
+    {
+      "slug": "fal-ai",
+      "name": "Fal ai",
+      "tier": 4
+    },
+    {
+      "slug": "recraft",
+      "name": "Recraft",
+      "tier": 4
+    },
+    {
+      "slug": "ideogram",
+      "name": "Ideogram",
+      "tier": 4
+    },
+    {
+      "slug": "hedra",
+      "name": "Hedra",
+      "tier": 4
+    },
+    {
+      "slug": "pika",
+      "name": "Pika Labs",
+      "tier": 4
+    },
+    {
+      "slug": "genmo",
+      "name": "Genmo",
+      "tier": 4
+    },
+    {
+      "slug": "viggle",
+      "name": "Viggle",
+      "tier": 4
+    },
+    {
+      "slug": "cartesia",
+      "name": "Cartesia",
+      "tier": 4
+    },
+    {
+      "slug": "sesame",
+      "name": "Sesame AI",
+      "tier": 4
+    },
+    {
+      "slug": "rime",
+      "name": "Rime",
+      "tier": 4
+    },
+    {
+      "slug": "vapi",
+      "name": "Vapi",
+      "tier": 4
+    },
+    {
+      "slug": "retell-ai",
+      "name": "Retell AI",
+      "tier": 4
+    },
+    {
+      "slug": "bland",
+      "name": "Bland AI",
+      "tier": 4
+    },
+    {
+      "slug": "sandboxaq",
+      "name": "SandboxAQ",
+      "tier": 3
+    },
+    {
+      "slug": "honeybook",
+      "name": "HoneyBook",
+      "tier": 4
+    },
+    {
+      "slug": "tapcart",
+      "name": "Tapcart",
+      "tier": 4
+    },
+    {
+      "slug": "capsule",
+      "name": "Capsule",
+      "tier": 4
+    },
+    {
+      "slug": "human",
+      "name": "Human Interest",
+      "tier": 2
+    },
+    {
+      "slug": "compound",
+      "name": "Compound Planning",
+      "tier": 2
+    },
+    {
+      "slug": "frec",
+      "name": "Frec",
+      "tier": 2
+    },
+    {
+      "slug": "titan",
+      "name": "Titan",
+      "tier": 2
+    },
+    {
+      "slug": "branchinsurance",
+      "name": "Branch Insurance",
+      "tier": 2
+    },
+    {
+      "slug": "junipersquare",
+      "name": "Juniper Square",
+      "tier": 2
+    },
+    {
+      "slug": "rho",
+      "name": "Rho",
+      "tier": 2
+    },
+    {
+      "slug": "highbeam",
+      "name": "Highbeam",
+      "tier": 2
+    },
+    {
+      "slug": "bestow",
+      "name": "Bestow",
+      "tier": 2
+    },
+    {
+      "slug": "coverdash",
+      "name": "Coverdash",
+      "tier": 2
+    },
+    {
+      "slug": "novo",
+      "name": "Novo",
+      "tier": 2
+    },
+    {
+      "slug": "sift",
+      "name": "Sift",
+      "tier": 2
+    },
+    {
+      "slug": "blockdaemon",
+      "name": "Blockdaemon",
+      "tier": 2
+    },
+    {
+      "slug": "nubank",
+      "name": "Nubank",
+      "tier": 2
+    },
+    {
+      "slug": "watershed",
+      "name": "Watershed",
+      "tier": 2
+    },
+    {
+      "slug": "sylvera",
+      "name": "Sylvera",
+      "tier": 2
+    },
+    {
+      "slug": "griffin",
+      "name": "Griffin",
+      "tier": 2
+    },
+    {
+      "slug": "keyrock",
+      "name": "Keyrock",
+      "tier": 1
+    },
+    {
+      "slug": "slope",
+      "name": "Slope",
+      "tier": 2
+    },
+    {
+      "slug": "addi",
+      "name": "Addi",
+      "tier": 2
+    },
+    {
+      "slug": "aplazo",
+      "name": "Aplazo",
+      "tier": 2
+    },
+    {
+      "slug": "zilch",
+      "name": "Zilch",
+      "tier": 2
+    },
+    {
+      "slug": "sydecar",
+      "name": "Sydecar",
+      "tier": 2
+    },
+    {
+      "slug": "allocate",
+      "name": "Allocate",
+      "tier": 2
+    },
+    {
+      "slug": "belvo",
+      "name": "Belvo",
+      "tier": 2
+    },
+    {
+      "slug": "cardless",
+      "name": "Cardless",
+      "tier": 2
+    },
+    {
+      "slug": "wayflyer",
+      "name": "Wayflyer",
+      "tier": 2
+    },
+    {
+      "slug": "clearco",
+      "name": "Clearco",
+      "tier": 2
+    },
+    {
+      "slug": "capchase",
+      "name": "Capchase",
+      "tier": 2
+    },
+    {
+      "slug": "vesta",
+      "name": "Vesta",
+      "tier": 2
+    },
+    {
+      "slug": "codat",
+      "name": "Codat",
+      "tier": 2
+    },
+    {
+      "slug": "trustly",
+      "name": "Trustly",
+      "tier": 2
+    },
+    {
+      "slug": "socure",
+      "name": "Socure",
+      "tier": 2
+    },
+    {
+      "slug": "trulioo",
+      "name": "Trulioo",
+      "tier": 2
+    },
+    {
+      "slug": "brale",
+      "name": "Brale",
+      "tier": 3
+    },
+    {
+      "slug": "candex",
+      "name": "Candex",
+      "tier": 3
+    },
+    {
+      "slug": "elliptic",
+      "name": "Elliptic",
+      "tier": 2
+    },
+    {
+      "slug": "quantexa",
+      "name": "Quantexa",
+      "tier": 2
+    },
+    {
+      "slug": "trm-labs",
+      "name": "TRM Labs",
+      "tier": 2
+    },
+    {
+      "slug": "range",
+      "name": "Range",
+      "tier": 3
+    },
+    {
+      "slug": "cointracker",
+      "name": "CoinTracker",
+      "tier": 3
+    },
+    {
+      "slug": "pleo",
+      "name": "Pleo",
+      "tier": 2
+    },
+    {
+      "slug": "dailypay",
+      "name": "DailyPay",
+      "tier": 2
+    },
+    {
+      "slug": "clair",
+      "name": "Clair",
+      "tier": 2
+    },
+    {
+      "slug": "brigit",
+      "name": "Brigit",
+      "tier": 2
+    },
+    {
+      "slug": "opengov",
+      "name": "OpenGov",
+      "tier": 2
+    },
+    {
+      "slug": "adonis",
+      "name": "Adonis",
+      "tier": 2
+    },
+    {
+      "slug": "candidhealth",
+      "name": "Candid Health",
+      "tier": 2
+    },
+    {
+      "slug": "marshmallow",
+      "name": "Marshmallow",
+      "tier": 2
+    },
+    {
+      "slug": "akasa",
+      "name": "AKASA",
+      "tier": 2
+    },
+    {
+      "slug": "tabs",
+      "name": "Tabs",
+      "tier": 2
+    },
+    {
+      "slug": "snapdocs",
+      "name": "Snapdocs",
+      "tier": 2
+    },
+    {
+      "slug": "rutter",
+      "name": "Rutter",
+      "tier": 2
+    },
+    {
+      "slug": "abound",
+      "name": "Abound",
+      "tier": 2
+    },
+    {
+      "slug": "ledger",
+      "name": "Ledger",
+      "tier": 2
+    },
+    {
+      "slug": "ontra",
+      "name": "Ontra",
+      "tier": 2
+    },
+    {
+      "slug": "zefr",
+      "name": "Zefr",
+      "tier": 3,
+      "note": "LA non-finance, added 2026-09-10"
+    }
+  ],
+  "lever": [
+    {
+      "slug": "veeva",
+      "name": "Veeva Systems",
+      "tier": 2
+    },
+    {
+      "slug": "shieldai",
+      "name": "Shield AI",
+      "tier": 2
+    },
+    {
+      "slug": "spotify",
+      "name": "Spotify",
+      "tier": 2
+    },
+    {
+      "slug": "matchgroup",
+      "name": "Match Group",
+      "tier": 2
+    },
+    {
+      "slug": "palantir",
+      "name": "Palantir",
+      "tier": 2
+    },
+    {
+      "slug": "gopuff",
+      "name": "Gopuff",
+      "tier": 3
+    },
+    {
+      "slug": "binance",
+      "name": "Binance",
+      "tier": 2,
+      "no_fill_form": "CITIZENSHIP HARD STOP, not a form problem. Every Binance Lever posting carries a REQUIRED 'What is your nationality?' country dropdown (confirmed live). profile.json deliberately records no citizenship country, so this is unanswerable by design. Postings are also non-US (HK/Taipei/Asia) with a sponsorship question scoped to a non-US location, which the US-specific frozen constants cannot answer. Route to human before navigating rather than paying the fill cost each time."
+    },
+    {
+      "slug": "anchorage",
+      "name": "Anchorage Digital",
+      "tier": 2
+    },
+    {
+      "slug": "alloy",
+      "name": "Alloy.ai",
+      "tier": 2
+    },
+    {
+      "slug": "tala",
+      "name": "Tala",
+      "tier": 2
+    },
+    {
+      "slug": "jito",
+      "name": "Jito",
+      "tier": 2
+    },
+    {
+      "slug": "netflix",
+      "status": "dead"
+    },
+    {
+      "slug": "plaid",
+      "status": "dead"
+    },
+    {
+      "slug": "brex",
+      "status": "dead"
+    },
+    {
+      "slug": "attentive",
+      "status": "dead"
+    },
+    {
+      "slug": "mistral",
+      "status": "dead"
+    },
+    {
+      "slug": "kraken",
+      "status": "dead"
+    },
+    {
+      "slug": "ripple",
+      "status": "dead"
+    },
+    {
+      "slug": "circle",
+      "status": "dead"
+    },
+    {
+      "slug": "nvidia",
+      "status": "dead"
+    },
+    {
+      "slug": "carta",
+      "status": "dead"
+    },
+    {
+      "slug": "scaleai",
+      "status": "dead"
+    },
+    {
+      "slug": "anduril",
+      "status": "dead"
+    },
+    {
+      "slug": "upstart",
+      "status": "dead"
+    },
+    {
+      "slug": "marqeta",
+      "status": "dead"
+    },
+    {
+      "slug": "sardine",
+      "status": "dead"
+    },
+    {
+      "slug": "lithic",
+      "status": "dead"
+    },
+    {
+      "slug": "draftkings",
+      "status": "dead"
+    },
+    {
+      "slug": "fanduel",
+      "status": "dead"
+    },
+    {
+      "slug": "revolut",
+      "status": "dead"
+    },
+    {
+      "slug": "klarna",
+      "status": "dead"
+    },
+    {
+      "slug": "belvederetrading",
+      "name": "Belvedere Trading",
+      "tier": 1
+    },
+    {
+      "slug": "valkyrietrading",
+      "name": "Valkyrie Trading",
+      "tier": 1
+    },
+    {
+      "slug": "gmo",
+      "name": "GMO",
+      "tier": 3
+    },
+    {
+      "slug": "nium",
+      "name": "Nium",
+      "tier": 2
+    },
+    {
+      "slug": "wealthfront",
+      "name": "Wealthfront",
+      "tier": 2
+    },
+    {
+      "slug": "includedhealth",
+      "name": "Included Health",
+      "tier": 2
+    },
+    {
+      "slug": "lyrahealth",
+      "name": "Lyra Health",
+      "tier": 2
+    },
+    {
+      "slug": "ro",
+      "name": "Ro",
+      "tier": 2
+    },
+    {
+      "slug": "sonarsource",
+      "name": "SonarSource",
+      "tier": 3
+    },
+    {
+      "slug": "outreach",
+      "name": "Outreach",
+      "tier": 3
+    },
+    {
+      "slug": "zoox",
+      "name": "Zoox",
+      "tier": 3
+    },
+    {
+      "slug": "olo",
+      "name": "Olo",
+      "tier": 3
+    },
+    {
+      "slug": "zilliz",
+      "name": "Zilliz",
+      "tier": 4
+    },
+    {
+      "slug": "enveda",
+      "name": "Enveda Biosciences",
+      "tier": 4
+    },
+    {
+      "slug": "dexterity",
+      "name": "Dexterity",
+      "tier": 4
+    },
+    {
+      "slug": "ambirobotics",
+      "name": "Ambi Robotics",
+      "tier": 4
+    },
+    {
+      "slug": "brightmachines",
+      "name": "Bright Machines",
+      "tier": 4
+    },
+    {
+      "slug": "seaportglobal",
+      "name": "Seaport Global",
+      "tier": 1
+    },
+    {
+      "slug": "immuta",
+      "name": "Immuta",
+      "tier": 2
+    },
+    {
+      "slug": "verygoodsecurity",
+      "name": "Very Good Security",
+      "tier": 2
+    },
+    {
+      "slug": "spreedly",
+      "name": "Spreedly",
+      "tier": 2
+    },
+    {
+      "slug": "finix",
+      "name": "Finix",
+      "tier": 2
+    },
+    {
+      "slug": "15five",
+      "name": "15Five",
+      "tier": 2
+    },
+    {
+      "slug": "contentsquare",
+      "name": "Contentsquare",
+      "tier": 3
+    },
+    {
+      "slug": "cloudinary",
+      "name": "Cloudinary",
+      "tier": 3
+    },
+    {
+      "slug": "aircall",
+      "name": "Aircall",
+      "tier": 3
+    },
+    {
+      "slug": "apolloresearch",
+      "name": "Apollo Research",
+      "tier": 4
+    },
+    {
+      "slug": "metr",
+      "name": "METR",
+      "tier": 4
+    },
+    {
+      "slug": "epoch-ai",
+      "name": "Epoch AI",
+      "tier": 4
+    },
+    {
+      "slug": "cimgroup",
+      "name": "CIM Group",
+      "tier": 2
+    },
+    {
+      "slug": "ambergroup",
+      "name": "Amber Group",
+      "tier": 1
+    },
+    {
+      "slug": "fundrise",
+      "name": "Fundrise",
+      "tier": 2
+    },
+    {
+      "slug": "angellist",
+      "name": "AngelList",
+      "tier": 2
+    },
+    {
+      "slug": "finch",
+      "name": "Finch",
+      "tier": 2
+    },
+    {
+      "slug": "greenlight",
+      "name": "Greenlight",
+      "tier": 2
+    },
+    {
+      "slug": "payactiv",
+      "name": "Payactiv",
+      "tier": 2
+    },
+    {
+      "slug": "emburse",
+      "name": "Emburse",
+      "tier": 2
+    },
+    {
+      "slug": "lendbuzz",
+      "name": "Lendbuzz",
+      "tier": 2
+    },
+    {
+      "slug": "unlimit",
+      "name": "Unlimit",
+      "tier": 3
+    },
+    {
+      "slug": "gynger",
+      "name": "Gynger",
+      "tier": 2
+    },
+    {
+      "slug": "moonpay",
+      "name": "MoonPay",
+      "tier": 2
+    },
+    {
+      "slug": "versapay",
+      "name": "Versapay",
+      "tier": 2
+    },
+    {
+      "slug": "dlocal",
+      "name": "dLocal",
+      "tier": 2
+    },
+    {
+      "slug": "truv",
+      "name": "Truv",
+      "tier": 2
+    },
+    {
+      "slug": "jamcity",
+      "name": "Jam City",
+      "tier": 3,
+      "note": "LA non-finance, added 2026-09-10"
+    },
+    {
+      "slug": "system1",
+      "name": "System1",
+      "tier": 3,
+      "note": "LA non-finance, added 2026-09-10"
+    },
+    {
+      "slug": "skydance",
+      "name": "Skydance",
+      "tier": 3,
+      "note": "LA non-finance, added 2026-09-10"
+    },
+    {
+      "slug": "wpromote",
+      "name": "Wpromote",
+      "tier": 3,
+      "note": "LA non-finance, added 2026-09-10"
+    }
+  ],
+  "workday": [
+    {
+      "tenant": "ms",
+      "wd": "wd5",
+      "site": "External",
+      "name": "Morgan Stanley",
+      "tier": 1
+    },
+    {
+      "tenant": "citi",
+      "wd": "wd5",
+      "site": "2",
+      "name": "Citi",
+      "tier": 1
+    },
+    {
+      "tenant": "blackrock",
+      "wd": "wd1",
+      "site": "BlackRock_Professional",
+      "name": "BlackRock",
+      "tier": 1
+    },
+    {
+      "tenant": "statestreet",
+      "wd": "wd1",
+      "site": "Global",
+      "name": "State Street",
+      "tier": 1
+    },
+    {
+      "tenant": "vanguard",
+      "wd": "wd5",
+      "site": "vanguard_external",
+      "name": "Vanguard",
+      "tier": 1
+    },
+    {
+      "tenant": "spgi",
+      "wd": "wd5",
+      "site": "SPGI_Careers",
+      "name": "S&P Global",
+      "tier": 3
+    },
+    {
+      "tenant": "fmr",
+      "wd": "wd1",
+      "site": "FidelityCareers",
+      "name": "Fidelity Investments",
+      "tier": 1
+    },
+    {
+      "tenant": "goldmansachs",
+      "status": "dead"
+    },
+    {
+      "tenant": "jpmc",
+      "status": "dead"
+    },
+    {
+      "tenant": "ubs",
+      "status": "dead"
+    },
+    {
+      "tenant": "nomura",
+      "status": "dead"
+    },
+    {
+      "tenant": "pimco",
+      "status": "dead"
+    },
+    {
+      "tenant": "aqr",
+      "status": "dead"
+    },
+    {
+      "tenant": "jefferies",
+      "status": "dead"
+    },
+    {
+      "tenant": "wellsfargo",
+      "status": "dead"
+    },
+    {
+      "tenant": "rbc",
+      "status": "dead"
+    },
+    {
+      "tenant": "bnymellon",
+      "status": "dead"
+    },
+    {
+      "tenant": "msci",
+      "status": "dead"
+    },
+    {
+      "tenant": "nasdaq",
+      "status": "dead"
+    },
+    {
+      "tenant": "invesco",
+      "status": "dead"
+    },
+    {
+      "tenant": "moodys",
+      "status": "dead"
+    },
+    {
+      "tenant": "northerntrust",
+      "status": "dead"
+    },
+    {
+      "tenant": "ntrs",
+      "status": "dead"
+    },
+    {
+      "tenant": "prudential",
+      "status": "dead"
+    },
+    {
+      "tenant": "tiaa",
+      "status": "dead"
+    },
+    {
+      "tenant": "alliancebernstein",
+      "status": "dead"
+    }
+  ],
+  "queries": {
+    "linkedin": {
+      "quantitative researcher": 1,
+      "quantitative analyst": 1,
+      "quantitative trader": 1,
+      "quantitative developer": 2,
+      "investment banking analyst": 1,
+      "equity research analyst": 1,
+      "private equity analyst": 1,
+      "private credit analyst": 1,
+      "hedge fund analyst": 1,
+      "asset management analyst": 2,
+      "wealth management analyst": 2,
+      "credit analyst": 2,
+      "treasury analyst": 2,
+      "underwriting analyst": 2,
+      "research analyst": 3,
+      "trading analyst": 1,
+      "risk analyst": 3,
+      "financial analyst": 3,
+      "fp&a analyst": 3,
+      "corporate finance analyst": 3,
+      "actuarial analyst": 3,
+      "regulatory compliance analyst": 3,
+      "structured finance analyst": 2,
+      "portfolio operations analyst": 3
+    },
+    "efc": {
+      "quantitative": 1,
+      "quantitative research": 1,
+      "trading": 1,
+      "investment banking": 1,
+      "private equity": 1,
+      "research analyst": 3,
+      "asset management": 2,
+      "credit analyst": 2,
+      "risk": 3,
+      "corporate finance": 3,
+      "underwriting": 2,
+      "actuarial": 3,
+      "regulatory compliance": 3,
+      "structured finance": 2,
+      "private credit": 2,
+      "portfolio operations": 3
+    },
+    "workday": {
+      "quantitative": 1,
+      "analyst program": 1,
+      "risk": 2,
+      "credit": 2,
+      "treasury": 2,
+      "underwriting": 2,
+      "structured finance": 2,
+      "private credit": 2,
+      "compliance": 2
+    },
+    "linkedin_la": {
+      "data analyst": 3,
+      "business analyst": 3,
+      "business intelligence analyst": 3,
+      "product analyst": 3,
+      "operations analyst": 3,
+      "strategy and operations": 3,
+      "business operations associate": 3,
+      "marketing analyst": 3,
+      "insights analyst": 3,
+      "market research analyst": 3,
+      "associate consultant": 3,
+      "rotational program": 3,
+      "data scientist": 2,
+      "analytics engineer": 2,
+      "machine learning engineer": 2,
+      "ai engineer": 4,
+      "junior data analyst": 3,
+      "entry level analyst": 3,
+      "associate analyst": 3,
+      "business systems analyst": 3,
+      "reporting analyst": 3,
+      "analytics associate": 3,
+      "strategy associate": 3,
+      "research analyst": 3,
+      "growth analyst": 3,
+      "revenue operations analyst": 3,
+      "marketing analytics": 3,
+      "ecommerce analyst": 3,
+      "merchandise planner": 3,
+      "demand planner": 3,
+      "data engineer": 2,
+      "python developer": 2,
+      "llm engineer": 4,
+      "automation engineer": 2,
+      "management consultant": 3,
+      "product operations": 3
+    }
+  },
+  "manual_only": {
+    "_note": "gaps #11: no programmatic route. Human worklist, checked by hand. Never automated.",
+    "portals": [
+      "Your school's career portal (e.g. 12twenty)",
+      "Handshake",
+      "YC Work at a Startup"
+    ],
+    "firms": [
+      "Citadel",
+      "Citadel Securities",
+      "Two Sigma",
+      "Hudson River Trading",
+      "SIG",
+      "Millennium",
+      "DE Shaw",
+      "DRW",
+      "XTX Markets",
+      "Goldman Sachs",
+      "JPMorgan"
+    ]
+  }
+}

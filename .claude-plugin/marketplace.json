@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "jobapply",
+  "description": "Semi-automated job applications for F-1/OPT new grads, driven by Claude Code.",
+  "owner": {
+    "name": "HaochenJar",
+    "url": "https://github.com/HaochenJar"
+  },
+  "plugins": [
+    {
+      "name": "jobapply",
+      "description": "Discover, score, tailor and fill job applications with human gates on every risky step.",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}
